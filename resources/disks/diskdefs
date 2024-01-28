@@ -1,0 +1,33 @@
+# A and B drive of the CP/M-68K sim.
+diskdef nkc-68k
+    seclen 1024
+    tracks 160
+    sectrk 5
+    blocksize 2048
+    maxdir 256
+    skew 0
+    boottrk 4
+    os 2.2
+end
+
+diskdef nkc-2.2
+    seclen 1024
+    tracks 160
+    sectrk 5
+    blocksize 2048
+    maxdir 128
+    skew 0
+    boottrk 4
+    os 2.2
+end
+
+diskdef ibm-3740
+  seclen 128
+  tracks 77
+  sectrk 26
+  blocksize 1024
+  maxdir 64
+  skew 6
+  boottrk 2
+  os 2.2
+end

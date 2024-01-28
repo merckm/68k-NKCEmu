@@ -1,0 +1,83 @@
+/CP /closepath load def
+/MT /moveto load def
+/LT /lineto load def
+/S /stroke load def
+/F /fill load def
+/s 20 string def
+
+/pw { currentpagedevice /PageSize get 0 get } def
+/ph { currentpagedevice /PageSize get 1 get } def
+
+.83 1 1 setrgbcolor
+
+% 0 ph MT pw ph LT pw ph 36 sub LT 0 ph 36 sub LT CP F
+
+/contform
+{
+  gsave
+  .83 1 1 setrgbcolor
+  ph -1 mul 72 0 {
+    /i exch def
+    ph i add
+    dup
+    12 exch MT
+    dup
+    pw 12 sub exch LT
+    dup
+    pw 12 sub exch 36 sub LT
+    dup
+    12 exch 36 sub LT CP F
+    pop
+  } for
+  0 setgray
+  ph -1 mul 72 0 {
+    /i exch def
+    /perf { 3 0 360 arc CP F } bind def
+    ph i add 18 add
+    dup 6 exch % left perforation center
+    perf
+    dup 36 sub 6 exch % 2nd left perforation center
+    perf
+    dup pw 6 sub exch % right perforation center
+    perf
+    dup 36 sub pw 6 sub exch % 2nd right perforation center
+    perf
+    pop
+  } for
+  grestore
+} bind def
+
+/bottom 12 def
+/lineshow                      % (string) lineshow -
+{ %def
+        % works like show, but checks for bottom
+        % of page and also moves current point
+        % down one line after each call
+        currentpoint exch pop % just the Y coord
+        bottom lt { %if
+                showpage
+                contform
+                12 ph 24 sub moveto % top of new page
+        } if
+        gsave show grestore
+        0 -12 rmoveto          % down one line
+} bind def
+
+%list the /tmp/passwd file
+/Courier findfont 10 scalefont setfont
+0 setgray
+
+contform
+12 ph 24 sub  moveto
+/datafile (list-ass.dat) (r) file def
+/buffer 256 string def
+{ %loop
+        datafile buffer readline { %ifelse
+                 lineshow
+        }{ %else
+                 datafile closefile
+                 exit
+        } ifelse
+} bind loop
+
+showpage

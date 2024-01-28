@@ -1,0 +1,32 @@
+build/*
+ayumi/samples/*
+resources/disks/CPM68k-Apps
+resources/code
+myresources
+
+=======
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+#cassette.cas
+#list.lst
+#prom.bin
+
+# Make output
+*.o
+*.exe
+
+# Make output
+*.vscode
+*.DS_Store
+
+*.text
