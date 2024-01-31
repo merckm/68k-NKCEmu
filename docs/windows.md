@@ -3,12 +3,16 @@ The following instructions give some hints how to setup a compile environment fo
 These examples use the UCRT toolchain but it schould also be possiblew to use the CLANG64 toolchain.
 
 1. Install MSYS2 from https://www.msys2.org/
-2. Install the GCC compiler and UCET runtime  
-`pacman -S mingw-w64-ucrt-x86_64-gcc`
-3. Install cmake and othe build  tools
+2. Install the GCC compiler and UCRT runtime\  
+`pacman -Sy mingw-w64-ucrt-x86_64-gcc`
+3. Install cmake and other build tools \
 `pacman -Sy mingw-w64-ucrt-x86_64-cmake`
-4. Install SDL2 for your toolchain  
-`pacman -Sy mingw-w64-ucrt-x86_64-SDL2`
+4. Install SDL2 for your toolchain  \
+`pacman -Sy mingw-w64-ucrt-x86_64-SDL2`\
+`pacman -Sy mingw-w64-ucrt-x86_64-SDL2_image`\
+`pacman -Sy mingw-w64-ucrt-x86_64-SDL2_ttf`
+4. Install ibyaml for your toolchain  \
+ `pacman -Sy mingw-w64-ucrt-x86_64-libyaml`
 
 #### Setup Visual Studio code to use the MSYS2 toolchain:
 
@@ -17,9 +21,9 @@ These examples use the UCRT toolchain but it schould also be possiblew to use th
 3. Alternatively you can install the C/C++ Extension Pack which includes both of the above and some other helpfull extensions. https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack
 4. Install the MSYS2 extension for VS Code. https://github.com/okhlybov/vscode-msys2
 
-You can install all required extension by pasting the following code into the search field  
+You can install all required extension by pasting the following code into the search field\  
 `ms-vscode.cmake-tools ms-vscode.cpptools fougas.msys2`  
-or  
+or  \
 `ms-vscode.cpptools-extension-pack fougas.msys2`  
 to use the extension pack.
 

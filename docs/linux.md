@@ -9,9 +9,9 @@ You can follow these steps to setup the required tools an libraries on Linux (UB
 3. Install Visual Studio Code and setup the extensions as explained below.
 You will need to download Visual Sudo Code from Microsofts webside under:
 4. Install SDL2 and related libraries  
-`sudo apt install libsadl2-dev`\
-`sudo apt install libsadl2-image-dev`\
-`sudo apt install libsadl2-ttf-dev`
+`sudo apt install libsdl2-dev`\
+`sudo apt install libsdl2-image-dev`\
+`sudo apt install libsdl2-ttf-dev`
 5. Install the YAML libreires\
 `sudo apt install libyaml-dev`
 
