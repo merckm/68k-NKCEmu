@@ -51,9 +51,9 @@ The code in this repository should compile on different OSes (Windows10/11, MacO
 
 Detailed setup instructions for the different platforms are provided:
 
-* [Windows](./docs/windows)
-* [Mac OSX](./docs/macosx)
-* [Linux](./docs/linux)
+* [Windows](./docs/windows.md)
+* [Mac OSX](./docs/macosx.md)
+* [Linux](./docs/linux.md)
 
 The repository also contains ready ZIP files for released versions wih all needed resources and compiled executable. THese are currently only available for Windows, Linux x64 and Linux Arm64.
 
