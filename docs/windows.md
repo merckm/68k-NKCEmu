@@ -12,7 +12,7 @@ These examples use the UCRT toolchain but it schould also be possiblew to use th
 `pacman -Sy mingw-w64-ucrt-x86_64-SDL2_image`\
 `pacman -Sy mingw-w64-ucrt-x86_64-SDL2_ttf`
 4. Install ibyaml for your toolchain  \
- `pacman -Sy mingw-w64-ucrt-x86_64-libyaml`
+`pacman -Sy mingw-w64-ucrt-x86_64-libyaml`
 
 #### Setup Visual Studio code to use the MSYS2 toolchain:
 

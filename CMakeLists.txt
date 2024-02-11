@@ -99,6 +99,12 @@ add_custom_command(TARGET 68k-nkcemu POST_BUILD
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${PROJECT_SOURCE_DIR}/config_710.yaml
+        ${PROJECT_BINARY_DIR}/config_710.yaml
+        COMMENT "Copying configuration file sample 7.10")       
+
+add_custom_command(TARGET 68k-nkcemu POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/list.lst
         ${PROJECT_BINARY_DIR}/list.lst
         COMMENT "Copying empty listing file")       

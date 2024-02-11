@@ -707,12 +707,6 @@ void gdp64_p70_out(BYTE b)
         break;
 
     case 10: /* block drawing 5x8 */
-        //int diff;
-        // gettimeofday(&g_akttime, NULL);
-        // diff = nkc_get_diff_micros(&g_oldtime, &g_akttime);
-        // fprintf(stderr, "GDP64: Block drawing 5x8  %d\n",diff);
-        // gettimeofday(&g_oldtime, NULL);
-
         DrawChar(128);
         break;
 

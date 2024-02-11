@@ -47,7 +47,8 @@
 #define PROM_DAT CPU * 0x00ffff80L         // Promer data register
 #define PROM_A1 CPU * 0x00ffff81L          // Promer address LSB register
 #define PROM_A2 CPU * 0x00ffff82L          // Promer address MSB register
-#define COLOR_A0 CPU * 0x00ffffA0L         // Unknown COLOR used by GRUND
+#define COLOR_A0 CPU * 0x00ffffA0L         // Forground COLOR used by GRUND
+#define COLOR_A1 CPU * 0x00ffffA1L         // Background COLOR used by GRUND
 #define FLO2_CMD CPU * 0x00ffffC0L         // FLO2 Command/status register
 #define FLO2_TRACK CPU * 0x00ffffC1L       // FLO2 Track register
 #define FLO2_SECT CPU * 0x00ffffC2L        // FLO2 Sector register

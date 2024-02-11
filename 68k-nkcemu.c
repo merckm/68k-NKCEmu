@@ -166,6 +166,51 @@ void termination_handler(int signum)
     exit(0);
 }
 
+/*
+  Print some information on the instruction and state.
+ */
+void trace()
+{
+    static char buff[100];
+    static char buff2[100];
+    static unsigned int pc, instr_size;
+
+    g_traceFunc = true;
+    pc = m68k_get_reg(NULL, M68K_REG_PC);
+
+    char buf[256];
+
+    m68k_disassemble(buf, pc, M68K_CPU_TYPE_68000);
+    if (pc < 0xFFFFFF)
+    {
+        fprintf( stdout,"%06x:%-22s   A0:%08x A1:%08x A2:%08x A3:%08x A4:%08x A5:%08x A6:%08x A7:%08x\r\n", pc, buf,
+                m68k_get_reg(NULL, M68K_REG_A0),
+                m68k_get_reg(NULL, M68K_REG_A1),
+                m68k_get_reg(NULL, M68K_REG_A2),
+                m68k_get_reg(NULL, M68K_REG_A3),
+                m68k_get_reg(NULL, M68K_REG_A4),
+                m68k_get_reg(NULL, M68K_REG_A5),
+                m68k_get_reg(NULL, M68K_REG_A6),
+                m68k_get_reg(NULL, M68K_REG_A7));
+        fprintf( stdout,"       SR:%08x              D0:%08x D1:%08x D2:%08x D3:%08x D4:%08x D5:%08x D6:%08x D7:%08x\r\n",
+                m68k_get_reg(NULL, M68K_REG_SR),
+                m68k_get_reg(NULL, M68K_REG_D0),
+                m68k_get_reg(NULL, M68K_REG_D1),
+                m68k_get_reg(NULL, M68K_REG_D2),
+                m68k_get_reg(NULL, M68K_REG_D3),
+                m68k_get_reg(NULL, M68K_REG_D4),
+                m68k_get_reg(NULL, M68K_REG_D5),
+                m68k_get_reg(NULL, M68K_REG_D6),
+                m68k_get_reg(NULL, M68K_REG_D7));
+        fflush(stdout);
+
+    }
+    g_traceFunc = false;
+
+    if (pc > 0xFFFF00)
+        termination_handler(0);
+}
+
 void nkc_reset(void)
 {
     flo2_close_drives();
@@ -465,9 +510,9 @@ unsigned int cpu_read_long(unsigned int address)
     if ((address >= g_config.col256RAMAddr) && (address <= g_config.col256RAMAddr + 0x3FFF) && g_col.col_active)
         return col_getLong(address);
 
-//    if(address >= 0x000064 && address <= 0x00007C) {
-//        log_debug("Reading 68000 interrupt vector %08X,  %08X", address, READ_LONG(g_ram, address));
-//    }
+    // if(address >= 0x000064 && address <= 0x00007C) {
+    //     log_debug("Reading 68000 interrupt vector %08X,  %08X", address, READ_LONG(g_ram, address));
+    // }
 
     if(address <= MAX_RAM)
         return READ_LONG(g_ram, address);
@@ -513,6 +558,7 @@ void cpu_write_byte(unsigned int address, unsigned int value)
             key_p68_out(value & 0xff);
             return;
         case COLOR_A0:
+        case COLOR_A1:
             return;
         case KEY_DIP:
             key_p69_out(value & 0xff);
@@ -714,51 +760,6 @@ unsigned int m68k_read_disassembler_16(unsigned int address)
 unsigned int m68k_read_disassembler_32(unsigned int address)
 {
     return cpu_read_long(address);
-}
-
-/*
-  Print some information on the instruction and state.
- */
-void trace()
-{
-    static char buff[100];
-    static char buff2[100];
-    static unsigned int pc, instr_size;
-
-    g_traceFunc = true;
-    pc = m68k_get_reg(NULL, M68K_REG_PC);
-
-    char buf[256];
-
-    m68k_disassemble(buf, pc, M68K_CPU_TYPE_68000);
-    if (pc < 0xFFFFFF)
-    {
-        fprintf( stdout,"%06x:%-22s   A0:%08x A1:%08x A2:%08x A3:%08x A4:%08x A5:%08x A6:%08x A7:%08x\r\n", pc, buf,
-                m68k_get_reg(NULL, M68K_REG_A0),
-                m68k_get_reg(NULL, M68K_REG_A1),
-                m68k_get_reg(NULL, M68K_REG_A2),
-                m68k_get_reg(NULL, M68K_REG_A3),
-                m68k_get_reg(NULL, M68K_REG_A4),
-                m68k_get_reg(NULL, M68K_REG_A5),
-                m68k_get_reg(NULL, M68K_REG_A6),
-                m68k_get_reg(NULL, M68K_REG_A7));
-        fprintf( stdout,"       SR:%08x              D0:%08x D1:%08x D2:%08x D3:%08x D4:%08x D5:%08x D6:%08x D7:%08x\r\n",
-                m68k_get_reg(NULL, M68K_REG_SR),
-                m68k_get_reg(NULL, M68K_REG_D0),
-                m68k_get_reg(NULL, M68K_REG_D1),
-                m68k_get_reg(NULL, M68K_REG_D2),
-                m68k_get_reg(NULL, M68K_REG_D3),
-                m68k_get_reg(NULL, M68K_REG_D4),
-                m68k_get_reg(NULL, M68K_REG_D5),
-                m68k_get_reg(NULL, M68K_REG_D6),
-                m68k_get_reg(NULL, M68K_REG_D7));
-        fflush(stdout);
-
-    }
-    g_traceFunc = false;
-
-    if (pc > 0xFFFF00)
-        termination_handler(0);
 }
 
 void load_roms()

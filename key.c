@@ -77,7 +77,7 @@ BYTE key_p68_in()
     if (g_key.clipboardOffset < g_key.clipboardLength)
     {
         BYTE ret = g_key.clipboardText[g_key.clipboardOffset];
-        // We will increase the offset when we receive a strope reset
+        // We will increase the offset when we receive a strobe reset
         if (ret == 0x0A)     // Ignore LF as it is Ctrl-J
         {
             g_key.clipboardOffset++;    // Here we will need to increase the offset

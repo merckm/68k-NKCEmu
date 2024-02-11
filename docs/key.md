@@ -19,10 +19,10 @@ The following section of the configuration file is used to configure the KEY DIL
 
 The meaning of the individual bits are:
 
-|                  | Grundporgram 6.x | Grundporgram 7.x |
+|                  | Grundporgram 6.x         | Grundporgram 7.x         |
 | ---------------- | ------------------------ | ------------------------ |
 | Bit 0 (0x01)     | Menu style  0=old/1=new  | reserved                 |
-| Bit 1 (0x02)     | Boot menu   0=no /1=yes  | autobootu   0=no /1=yes  |
+| Bit 1 (0x02)     | Boot menu   0=no /1=yes  | autoboot    0=no /1=yes  |
 | Bit 2 (0x04)     | RTC Clock   0=no /1=yes  | RTC Clock   0=no /1=yes  |
 | Bit 3 (0x08)     | GDP version 0=64K/1=64HS | GDP version 0=64K/1=64HS |
 | Bit 4 (0x10)     | Harddisk    0=no /1=yes  | Harddisk    0=no /1=yes  |
