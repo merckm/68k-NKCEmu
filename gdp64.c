@@ -18,7 +18,7 @@
  *   copies or substantial portions of the Software.                                  *
  *                                                                                    *
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR       *
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         * 
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         *
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE      *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER           *
  *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,    *
@@ -60,10 +60,10 @@ WORD lineStyle[4] = {0xFFFF,  /* Line styles of EF9366 in hexadecimal representa
                      0xFFCC}; /* Dotted-dashed (10 dots on, 2 dots off, 2 dots on, 2 dots off) */
 
 /* global variables SDL */
-SDL_Color bg = {0x00, 0x00, 0x00, 0xFF};
-Uint32 bg32 = 0x000000FF;
-SDL_Color fg = {0x10, 0xA4, 0x13, 0xFF};
-Uint32 fg32 = 0x10A413FF;
+const SDL_Color bg = {0x00, 0x00, 0x00, 0xFF};
+const Uint32 bg32 = 0x000000FF;
+const SDL_Color fg = {0x10, 0xA4, 0x13, 0xFF};
+const Uint32 fg32 = 0x10A413FF;
 
 /*
   Begin of all SDL related functions
@@ -74,6 +74,8 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
         return; /* Pen is outside of the screen */
     if (y < 0 || y > 255)
         return; /* same in y direction */
+    // XOR mode active when (1.) Draw-pen is selected and (2.) XOR_EN bit is set
+    const bool xor_en = (((g_gdp.regs.seite & 0x01)!=0) && ((g_gdp.regs.ctrl1 & 0x02)!=0));
 
     Uint32 color = SDL_MapRGB(sc->format, R, G, B);
 
@@ -88,7 +90,11 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
             for (int j = 0; j < g_gdp.ymag; j++)
             {
                 bufp = (Uint8 *)sc->pixels + (y * g_gdp.ymag + j) * sc->pitch + (x * g_gdp.xmag + i);
-                *bufp = color;
+                if (xor_en) {
+                    *bufp ^= color;
+                }else{
+                    *bufp = color;
+                }
             }
         }
     }
@@ -103,7 +109,11 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
             for (int j = 0; j < g_gdp.ymag; j++)
             {
                 bufp = (Uint16 *)sc->pixels + (y * g_gdp.ymag + j) * sc->pitch / 2 + (x * g_gdp.xmag + i);
-                *bufp = color;
+                if (xor_en) {
+                    *bufp ^= color;
+                }else{
+                    *bufp = color;
+                }
             }
         }
     }
@@ -121,15 +131,27 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
                 bufp = (Uint8 *)sc->pixels + (y * g_gdp.ymag + j) * sc->pitch + (x * g_gdp.xmag + i);
                 if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
                 {
-                    bufp[0] = color;
-                    bufp[1] = color >> 8;
-                    bufp[2] = color >> 16;
+                    if (xor_en) {
+                        bufp[0] ^= color;
+                        bufp[1] ^ color >> 8;
+                        bufp[2] ^= color >> 16;
+                    }else{
+                        bufp[0] = color;
+                        bufp[1] = color >> 8;
+                        bufp[2] = color >> 16;
+                    }
                 }
                 else
                 {
-                    bufp[2] = color;
-                    bufp[1] = color >> 8;
-                    bufp[0] = color >> 16;
+                    if (xor_en) {
+                        bufp[2] ^= color;
+                        bufp[1] ^= color >> 8;
+                        bufp[0] ^= color >> 16;
+                    }else{
+                        bufp[2] = color;
+                        bufp[1] = color >> 8;
+                        bufp[0] = color >> 16;
+                    }
                 }
             }
         }
@@ -145,7 +167,11 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
             for (int j = 0; j < g_gdp.ymag; j++)
             {
                 bufp = (Uint32 *)sc->pixels + (y * g_gdp.ymag + j) * sc->pitch / 4 + (x * g_gdp.xmag + i);
-                *bufp = color;
+                if (xor_en) {
+                    *bufp ^= color;
+                }else{
+                    *bufp = color;
+                }
             }
         }
     }
@@ -166,10 +192,6 @@ void DrawChar(unsigned char c)
     int xSize = 0;
     int ySize = 0;
 
-    if (realX < 0 || realX > 512)
-        return; /* Pen is outside of the screen */
-    if (realY < 0 || realY > 256)
-        return; /* same in y direction */
     if (c_off > 96)
         return;          /* wasn't an ASCII character or block */
     if (g_gdp.regs.ctrl1 & 1) /* is Pen down? else just calculate new coordinates */
@@ -251,10 +273,6 @@ void DrawBlock()
     int xSize = 0;
     int ySize = 0;
 
-    if (realX < 0 || realX > 512)
-        return; /* Pen is outside of the screen */
-    if (realY < 0 || realY > 256)
-        return;          /* same in y direction */
     if (g_gdp.regs.ctrl1 & 1) /* is Pen down? else just calculate new coordinates */
     {
         if (SDL_MUSTLOCK(g_gdp.pages[g_gdp.actualWritePage]))
@@ -277,9 +295,7 @@ void DrawBlock()
             xSize = 16;
         if (ySize == 0)
             ySize = 16;
-        xSize = 16;
-        ySize = 16;
-        
+
         for (x = 0; x < 4; x++)
         {
             for (y = 0; y < 4; y++)
@@ -600,6 +616,23 @@ void gdp64_p60_out(BYTE b)
         g_gdp.contentChanged = 1;
     }
     g_gdp.regs.seite = b;
+}
+
+BYTE gdp64_p61_in()
+{
+    return 0;   // Should be DMA Register
+}
+
+void gdp64_p61_out(BYTE b)
+{
+//    if(g_gdp.isGuiScreen)
+//        return;
+    if (g_gdp.regs.scroll != b)
+    {
+        g_gdp.contentChanged = 1;
+
+    }
+    g_gdp.regs.scroll = b;
 }
 
 BYTE gdp64_p70_in()
@@ -953,7 +986,7 @@ void gdp64_p7A_out(BYTE b)
 {
     /* set Y MSB register of EF9366 */
 //    log_debug("Set Y MSB to %d", b);
-    g_gdp.regs.penY = (((int)b) << 8) | (g_gdp.regs.penY & 0xFF);
+    g_gdp.regs.penY = (((short)b) << 8) | (g_gdp.regs.penY & 0xFF);
 }
 
 void gdp64_p7A_out_word(int b)
@@ -971,7 +1004,7 @@ void gdp64_p7B_out(BYTE b)
 {
     /* set Y LSB register of EF9366 */
 //    log_debug("Set Y LSB to %d", b);
-    g_gdp.regs.penY = ((int)b) | (g_gdp.regs.penY & 0xFF00);
+    g_gdp.regs.penY = ((short)b) | (g_gdp.regs.penY & 0xFF00);
 }
 
 void gdp64_save_regs()
@@ -1021,12 +1054,12 @@ void gdp64_gui_draw_string(int x, int y, int size, const char * str)
         char ch = str[i];
         if(ch >= 0x20 && ch <= 0x7F) {
             // Set Erapen
-            g_gdp.regs.ctrl1 &= 0b11111101; 
+            g_gdp.regs.ctrl1 &= 0b11111101;
             DrawChar(128);              // Draw Block to erase background
             // Set Pen
             g_gdp.regs.penX = cur_x;
             g_gdp.regs.penY = cur_y;
-            g_gdp.regs.ctrl1 |= 0b00000010; 
+            g_gdp.regs.ctrl1 |= 0b00000010;
             DrawChar(str[i]);           // Draw Character
         }
         if(ch == 0x0a )
@@ -1090,7 +1123,7 @@ void gdp64_gui_blink_cursor()
                 g_gdp.regs.csize = g_gui_cursor.csize;
                 g_gdp.regs.ctrl1 &= 0b11111101; // Set Erapen
                 DrawChar(128);              // Erase cursor block
-                g_gdp.regs.ctrl1 |= 0b00000010; 
+                g_gdp.regs.ctrl1 |= 0b00000010;
                 g_gui_cursor.isOff = true;
             }
             else {
@@ -1115,7 +1148,7 @@ int gdp64_init()
 {
     int rendererFlags = SDL_RENDERER_SOFTWARE;
 //    int rendererFlags = SDL_RENDERER_ACCELERATED;
-    
+
     g_gdp.xmag = g_config.gdp64XMag;
     g_gdp.ymag = g_config.gdp64YMag;
 
@@ -1157,6 +1190,7 @@ void gdp64_reset()
     g_gdp.regs.deltax = 0x00;       /* DELTAX register */
     g_gdp.regs.deltay = 0x00;       /* DELTAY register */
     g_gdp.regs.seite = 0;           /* PAGE register */
+    g_gdp.regs.scroll = 0;          /* HARD-SCROLL register */
     g_gdp.actualWritePage = 0;      /* on which page do we write at the moment? */
     g_gdp.actualReadPage = 0;       /* which page is shown at the moment? */
     g_gdp.contentChanged = 0;       /* something new written? */
@@ -1179,7 +1213,30 @@ void gdp64_set_vsync(BYTE vs)
         /* now blit actual readed page if something has changed */
         if (g_gdp.contentChanged == 1)
         {
-            SDL_BlitSurface(g_gdp.pages[g_gdp.actualReadPage], NULL, SDL_GetWindowSurface(g_gdp.window), NULL);
+            // Scroll Screen by g_gdp.regs.scroll pixels down
+            const unsigned int scroll_value = (unsigned int)(g_gdp.regs.scroll & 0xFE);
+            if (scroll_value!=0){
+                // Window is 256*3 = 768 in height, y-coordinates are mirrores (0,0 is top-left)
+               {
+                    // 1. Scroll upper part (scroll...top) down to 0
+                    const SDL_Rect src = {.x=0,.y=0,.w=512 * g_gdp.xmag, .h=(256 - scroll_value) * g_gdp.ymag};
+                    SDL_Rect dest      = {.x=0,.y=(scroll_value) * g_gdp.ymag,.w=512 * g_gdp.xmag, .h=(256 - scroll_value) * g_gdp.ymag};
+                    SDL_BlitSurface(g_gdp.pages[g_gdp.actualReadPage], &src, SDL_GetWindowSurface(g_gdp.window), &dest);
+                    //printf("Scroll: %u %u\r\n",scroll_value,g_gdp.ymag);
+                    //printf("rect1: y:%u, h:%u -> y:%u, h:%u\r\n",src.y, src.h, dest.y, dest.h);
+                    //fflush(stdout);
+                }
+                {
+                    // 2. Scroll lower part (0...scroll) up to top
+                    const SDL_Rect src = {.x=0,.y=(256 - scroll_value) * g_gdp.ymag,.w=512 * g_gdp.xmag, .h=scroll_value * g_gdp.ymag};
+                    SDL_Rect dest      = {.x=0,.y=0,.w=512 * g_gdp.xmag, .h=scroll_value * g_gdp.ymag};
+                    SDL_BlitSurface(g_gdp.pages[g_gdp.actualReadPage], &src, SDL_GetWindowSurface(g_gdp.window), &dest);
+                    //printf("rect2: y:%u, h:%u -> y:%u, h:%u\r\n",src.y, src.h, dest.y, dest.h);
+                    //fflush(stdout);
+                }
+            }else{
+                SDL_BlitSurface(g_gdp.pages[g_gdp.actualReadPage], NULL, SDL_GetWindowSurface(g_gdp.window), NULL);
+            }
             SDL_RenderPresent(g_gdp.renderer);
             g_gdp.contentChanged = 0;
         }

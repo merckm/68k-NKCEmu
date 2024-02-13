@@ -370,6 +370,8 @@ unsigned int cpu_read_byte(unsigned int address)
             return key_p69_in();
         case GDP_PAGE:
             return gdp64_p60_in();
+        case GDP_SCROLL:
+            return gdp64_p61_in();
         case GDP_CMD:
             return gdp64_p70_in();
         case GDP_CMD + 1:
@@ -565,6 +567,9 @@ void cpu_write_byte(unsigned int address, unsigned int value)
             return;
         case GDP_PAGE:
             gdp64_p60_out(value & 0xff);
+            return;
+        case GDP_SCROLL:
+            gdp64_p61_out(value & 0xff);
             return;
         case GDP_CMD:               // Status register
             gdp64_p70_out(value & 0xff);
@@ -787,7 +792,7 @@ void load_roms()
 
             if ((i = fread(g_ram + g_config.roms[idx].start, 1, g_config.roms[idx].size, file)) == -1)
                 exit_error("Error reading %s", romFile);
-            
+
             if ( g_config.roms[idx].start == 0x0E0000)
                 g_start_gp_ram = g_config.roms[idx].start + g_config.roms[idx].size;
 
@@ -831,13 +836,13 @@ void cpu_instr_callback(int pc)
             m68k_set_irq(M68K_IRQ_5);
         }
     }
-    else if (diff >= 1472 )        // 1472000 ns 
+    else if (diff >= 1472 )        // 1472000 ns
     {
         gdp64_set_vsync(0);
         g_nmi = 0;
         if(g_config.setINT == TRUE && g_config.setNMI == FALSE)
             m68k_set_irq(0);
-    } 
+    }
     else    	            // As long as we are in the VSYNC period, the lower level interrupt is set
     {
         if(g_config.setINT == TRUE && g_config.setNMI == FALSE)
@@ -906,7 +911,7 @@ int main(int argc, char **argv)
     struct timespec res;
 
     long long extraNanos = 0;
-    
+
     clock_gettime( CLOCK_REALTIME, &start);
     while (true)
     {

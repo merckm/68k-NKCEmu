@@ -36,12 +36,13 @@ typedef struct {
     BYTE status;                /* status of the gdp */
     BYTE ctrl1;                 /* CTRL1 register */
     BYTE ctrl2;                 /* CTRL2 register */
-    int penX;                   /* Pen X and Y position */
-    int penY;
+    short penX;                   /* Pen X and Y position */
+    short penY;
     BYTE csize;                 /* CSIZE register */
     BYTE deltax;                /* DELTAX register */
     BYTE deltay;                /* DELTAY register */
     BYTE seite;                 /* PAGE register */
+    BYTE scroll;                /* HARD-SCROLL register */
 } gdp64_registers;
 
 typedef struct {
@@ -75,6 +76,8 @@ extern "C"
 
     BYTE gdp64_p60_in();
     void gdp64_p60_out(BYTE data);
+    BYTE gdp64_p61_in();
+    void gdp64_p61_out(BYTE b);
     BYTE gdp64_p70_in();
     void gdp64_p70_out(BYTE data);
     BYTE gdp64_p71_in();
