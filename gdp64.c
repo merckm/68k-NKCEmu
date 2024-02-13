@@ -133,8 +133,8 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
                 {
                     if (xor_en) {
                         bufp[0] ^= color;
-                        bufp[1] ^ color >> 8;
-                        bufp[2] ^= color >> 16;
+                        bufp[1] ^= (color >> 8);
+                        bufp[2] ^= (color >> 16);
                     }else{
                         bufp[0] = color;
                         bufp[1] = color >> 8;
@@ -145,8 +145,8 @@ void DrawPixel(SDL_Surface *sc, int x, int y, Uint8 R, Uint8 G, Uint8 B)
                 {
                     if (xor_en) {
                         bufp[2] ^= color;
-                        bufp[1] ^= color >> 8;
-                        bufp[0] ^= color >> 16;
+                        bufp[1] ^= (color >> 8);
+                        bufp[0] ^= (color >> 16);
                     }else{
                         bufp[2] = color;
                         bufp[1] = color >> 8;
