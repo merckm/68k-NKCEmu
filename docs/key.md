@@ -19,7 +19,7 @@ The following section of the configuration file is used to configure the KEY DIL
 
 The meaning of the individual bits are:
 
-|                  | Grundporgram 6.x         | Grundporgram 7.x         |
+|                  | Grundprogramm 6.x        | Grundprogramm 7.x        |
 | ---------------- | ------------------------ | ------------------------ |
 | Bit 0 (0x01)     | Menu style  0=old/1=new  | reserved                 |
 | Bit 1 (0x02)     | Boot menu   0=no /1=yes  | autoboot    0=no /1=yes  |
