@@ -6,6 +6,7 @@
  *   of this software and associated documentation files (the "Software"), to deal    *
  *   in the Software without restriction, including without limitation the rights     *
  *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell        *
+
  *   copies of the Software, and to permit persons to whom the Software is            *
  *   furnished to do so, subject to the following conditions:                         *
  *                                                                                    *
@@ -43,6 +44,7 @@
 #define KEY_DATA CPU * 0x00ffff68L         // Key status/data keyboard register
 #define KEY_DIP CPU * 0x00ffff69L          // Key data DIP switches register
 #define GDP_PAGE CPU * 0x00ffff60L         // GDP page register
+#define GDP_SCROLL CPU * 0x00ffff61L       // GDP Hardscroll register
 #define GDP_CMD CPU * 0x00ffff70L          // Basis of GDP registers
 #define PROM_DAT CPU * 0x00ffff80L         // Promer data register
 #define PROM_A1 CPU * 0x00ffff81L          // Promer address LSB register
