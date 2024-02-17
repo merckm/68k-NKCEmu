@@ -31,8 +31,8 @@
 - RomSize_AC000: 0
 - RomPath_AE000: 
 - RomSize_AE000: 0
-- RomPath_B0000: 
-- RomSize_B0000: 0
+- RomPath_B0000: ./resources/roms/spaceinv3.bin
+- RomSize_B0000: 31584
 - RomPath_B2000:
 - RomSize_B2000: 0
 - RomPath_B4000:
