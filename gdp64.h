@@ -32,6 +32,10 @@
 
 #include "nkc.h"
 
+// 0,0 is bottom-left on GDP screen
+#define GDP_X_RES 512
+#define GDP_Y_RES 256
+
 typedef struct {
     BYTE status;                /* status of the gdp */
     BYTE ctrl1;                 /* CTRL1 register */
@@ -112,6 +116,8 @@ extern "C"
     void gdp64_restore_regs();
     void gdp64_set_vsync(BYTE vs);
     void gdp64_event(SDL_Event* event);
+    int get_x_mag();
+    int get_y_mag();
 
 #ifdef __cplusplus
 }

@@ -26,6 +26,10 @@ add_subdirectory(Musashi)
 list(APPEND EXTRA_LIBS musashi)
 list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/Musashi" )
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+#target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
+
 if ( APPLE )
         set(HOMEBREW_PREFIX "/opt/homebrew"
                 CACHE PATH "Path to Homebrew installation")
@@ -51,19 +55,22 @@ add_executable(${PROJECT_NAME} 68k-nkcemu.c
                       centronics.c
                       flo2.c
                       crc.c
-                      promer.c 
+                      promer.c
                       sound.c
                       uhr.c
+                      ser.c
+                      ram_fifo.c
+                      mouse.c
                       m68kconf.h)
 
-target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -lm)
+target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -lm Threads::Threads)
 if(MINGW)
         if(CMAKE_BUILD_TYPE MATCHES Debug)
                 message("DEBUG BUILD")
-                target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -lm)
+                target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -lm Threads::Threads)
         else()
                 message("RELEASE BUILD ${CMAKE_BUILD_TYPE}")
-                target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -mwindows -lm)
+                target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -mwindows -lm Threads::Threads)
         endif()
 endif()
 
@@ -71,41 +78,41 @@ add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${PROJECT_SOURCE_DIR}/resources
         ${PROJECT_BINARY_DIR}/resources
-        COMMENT "Copying resources into binary directory")       
+        COMMENT "Copying resources into binary directory")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/config.yaml
         ${PROJECT_BINARY_DIR}/config.yaml
-        COMMENT "Copying configuration file")       
+        COMMENT "Copying configuration file")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/config_43.yaml
         ${PROJECT_BINARY_DIR}/config_43.yaml
-        COMMENT "Copying configuration file sample 4.3")       
+        COMMENT "Copying configuration file sample 4.3")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/config_622.yaml
         ${PROJECT_BINARY_DIR}/config_622.yaml
-        COMMENT "Copying configuration file sample 6.22")       
+        COMMENT "Copying configuration file sample 6.22")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/config_701.yaml
         ${PROJECT_BINARY_DIR}/config_701.yaml
-        COMMENT "Copying configuration file sample 7.01")       
+        COMMENT "Copying configuration file sample 7.01")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/config_710.yaml
         ${PROJECT_BINARY_DIR}/config_710.yaml
-        COMMENT "Copying configuration file sample 7.10")       
+        COMMENT "Copying configuration file sample 7.10")
 
 add_custom_command(TARGET 68k-nkcemu POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${PROJECT_SOURCE_DIR}/list.lst
         ${PROJECT_BINARY_DIR}/list.lst
-        COMMENT "Copying empty listing file")       
+        COMMENT "Copying empty listing file")
 

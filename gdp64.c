@@ -1158,6 +1158,7 @@ int gdp64_init()
                                     512 * g_gdp.xmag, 256 * g_gdp.ymag,
                                     SDL_SWSURFACE);
     g_gdp.renderer = SDL_CreateRenderer(g_gdp.window, -1, rendererFlags);
+    SDL_WarpMouseInWindow(g_gdp.window, g_gdp.xmag*GDP_X_RES/2, g_gdp.ymag*GDP_Y_RES/2);/*sets mouse position to 50, 50 relative to the window */
     if (g_gdp.window == NULL)
     {
         log_error("Can't set video mode: %s", SDL_GetError());
@@ -1254,6 +1255,7 @@ void gdp64_event(SDL_Event *event)
         Uint32 flags = SDL_GetWindowFlags(g_gdp.window);
         if (( flags & SDL_WINDOW_MOUSE_FOCUS ) == 0)
             SDL_RaiseWindow(g_gdp.window);
+        //printf("%d.%d\n",event->motion.x/g_gdp.xmag, event->motion.y/g_gdp.ymag);
     }
 
     if (event->type == SDL_KEYDOWN)
@@ -1268,4 +1270,14 @@ void gdp64_event(SDL_Event *event)
             SDL_ShowCursor(IsFullscreen);
         }
     }
+}
+
+int get_x_mag()
+{
+    return g_gdp.xmag;
+}
+
+int get_y_mag()
+{
+    return g_gdp.ymag;
 }

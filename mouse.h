@@ -23,39 +23,33 @@
  *                                                                                    *
  **************************************************************************************/
 
-#ifndef HEADER__SER
-#define HEADER__SER
+#ifndef HEADER__MOUSE
+#define HEADER__MOUSE
 #include <termios.h>
 #include "nkc.h"
 
 typedef struct {
-    BYTE rx_data;                /* RX-data */
-    BYTE tx_data;                /* TX-data */
-    BYTE status;                 /* Status Register */
-    //bool soft_reset;             /* Software-Reset triggered when writing to this Register */
-    BYTE command;                /* Command Register */
-    BYTE control;                /* Control Register */
-} ser_registers;
+    BYTE key_stat;
+    BYTE up_reg;
+    BYTE down_reg;
+    BYTE right_reg;
+    BYTE left_reg;
+} mouse_registers;
 
+#define MOUSE_BASE_ADDRESS 0x88
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    BYTE ser_pF0_in();
-    void ser_pF0_out(BYTE data);
-    BYTE ser_pF1_in();
-    void ser_pF1_out(BYTE data);
-    BYTE ser_pF2_in();
-    void ser_pF2_out(BYTE data);
-    BYTE ser_pF3_in();
-    void ser_pF3_out(BYTE data);
-    void ser_reset();
-    void ser_close();
+    void mouse_event(SDL_Event *event);
+    BYTE bus_mouse_in(const BYTE ofs);
+    void bus_mouse_out(const BYTE ofs, const BYTE data);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* HEADER__SER */
+#endif /* HEADER__MOUSE */

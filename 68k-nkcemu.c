@@ -62,6 +62,8 @@
 #include "promer.h"
 #include "sound.h"
 #include "uhr.h"
+#include "ser.h"
+#include "mouse.h"
 
 /* Read/write macros */
 #define READ_BYTE(BASE, ADDR) (BASE)[ADDR]
@@ -158,6 +160,7 @@ void termination_handler(int signum)
 {
     int i;
 
+    ser_close();
     flo2_close_drives();
     saveConfig("./config.yaml");
 
@@ -275,6 +278,7 @@ void handle_event()
         if (event.window.windowID == g_gdpWindowId)
         {
             gdp64_event(&event);
+            mouse_event(&event);
 
             if (event.type == SDL_KEYDOWN)
             {
@@ -438,6 +442,20 @@ unsigned int cpu_read_byte(unsigned int address)
             return col_pCE_in();
         case UHR_DATA:
             return uhr_pFE_in();
+        case SER_DATA:
+            return ser_pF0_in();
+        case SER_STATUS:
+            return ser_pF1_in();
+        case SER_COMMAND:
+            return ser_pF2_in();
+        case SER_CONTROL:
+            return ser_pF3_in();
+        case MOUSE_KEY:
+        case MOUSE_UP:
+        case MOUSE_DOWN:
+        case MOUSE_LEFT:
+        case MOUSE_RIGHT:
+            return bus_mouse_in((address - MOUSE_BASE) & 0xFFu);
         case UNKNOWN:
             return 0;
         default:
@@ -658,6 +676,25 @@ void cpu_write_byte(unsigned int address, unsigned int value)
         case UHR_DATA:
             uhr_pFE_out(value & 0xff);
             return;
+        case SER_DATA:
+            ser_pF0_out(value & 0xff);
+            return;
+        case SER_STATUS:
+            ser_pF1_out(value & 0xff);
+            return;
+        case SER_COMMAND:
+            ser_pF2_out(value & 0xff);
+            return;
+        case SER_CONTROL:
+            ser_pF3_out(value & 0xff);
+            return;
+        case MOUSE_KEY:
+        case MOUSE_UP:
+        case MOUSE_DOWN:
+        case MOUSE_LEFT:
+        case MOUSE_RIGHT:
+            bus_mouse_out((address - MOUSE_BASE) & 0xFFu, value & 0xFFu);
+            return;
         case UNKNOWN:
             return;
         default:
@@ -748,7 +785,7 @@ void cpu_pulse_reset(void)
     cent_reset();
     promer_reset();
     uhr_reset();
-    sound_reset(g_config.soundDriver);
+    //sound_reset(g_config.soundDriver);	// AV. Comment if no sound be present
 }
 
 /* Called when the CPU changes the function code pins */
@@ -920,7 +957,7 @@ int main(int argc, char **argv)
         if (g_trace)
         {
             trace();
-            SDL_Delay(100);
+            //SDL_Delay(100);
         }
 
         //    m68k_execute(g_trace ? 1 : 1000); // execute 10,000 MC68000 instructions
