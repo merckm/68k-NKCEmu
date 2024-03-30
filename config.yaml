@@ -1,26 +1,27 @@
 ---
-- CPUSpeed: 8
-- NumWaitStates: 0
-- GDP64XMag: 2
-- GDP64YMag: 3
-- Col256XMag: 2
-- Col256YMag: 2
-- Col256RAM: 0x000EC000
-- KeyDILSwitches: 0x0C
+# Configuration file for the NKC 68K Simulator
+- CPUSpeed: 8               # CPU speed in MHz
+- NumWaitStates: 3          # Number of wait states for memory access
+- GDP64XMag: 2              # Magnification factor for the GDP64 display in X direction      
+- GDP64YMag: 3              # Magnification factor for the GDP64 display in Y direction
+- Col256XMag: 2             # Magnification factor for the Col256 display in X direction
+- Col256YMag: 2             # Magnification factor for the Col256 display in Y direction
+- Col256RAM: 0x000DC000     # Start address of the Col256 RAM
+- KeyDILSwitches: 0x07      # DIL switches for the Key card used for boot configuration
 - SoundDriver: 
 - CasFile: ./resources/cassettes/quadrat.cas
 - ListFile: ./list.lst
 - PromFile: ./resources/roms/prom.bin
 - JoystickA: 
-- JoystickB: 
-- BankBootRom: ./resources/roms/BKBOOT08.ROM
-- RomPath_A0000: ./resources/roms/pascal.bin
-- RomSize_A0000: 32768
-- RomPath_A2000: 
+- JoystickB:
+- BankBootRom: ./resources/roms/BKBOOT08.ROM 
+- RomPath_A0000: 
+- RomSize_A0000: 0
+- RomPath_A2000:
 - RomSize_A2000: 0
-- RomPath_A4000: 
+- RomPath_A4000:
 - RomSize_A4000: 0
-- RomPath_A6000: 
+- RomPath_A6000:
 - RomSize_A6000: 0
 - RomPath_A8000: 
 - RomSize_A8000: 0
@@ -30,13 +31,13 @@
 - RomSize_AC000: 0
 - RomPath_AE000: 
 - RomSize_AE000: 0
-- RomPath_B0000: 
-- RomSize_B0000: 0
-- RomPath_B2000: 
+- RomPath_B0000: ./resources/roms/spaceinv3.bin
+- RomSize_B0000: 31584
+- RomPath_B2000:
 - RomSize_B2000: 0
-- RomPath_B4000: 
+- RomPath_B4000:
 - RomSize_B4000: 0
-- RomPath_B6000: 
+- RomPath_B6000:
 - RomSize_B6000: 0
 - RomPath_B8000: 
 - RomSize_B8000: 0
@@ -48,9 +49,9 @@
 - RomSize_BE000: 0
 - RomPath_C0000: ./resources/roms/68008_GOSI.BIN
 - RomSize_C0000: 24576
-- RomPath_C2000: 
+- RomPath_C2000:
 - RomSize_C2000: 0
-- RomPath_C4000: 
+- RomPath_C4000:
 - RomSize_C4000: 0
 - RomPath_C6000: 
 - RomSize_C6000: 0
@@ -58,36 +59,39 @@
 - RomSize_C8000: 0
 - RomPath_CA000: 
 - RomSize_CA000: 0
-- RomPath_CC000: 
-- RomSize_CC000: 0
-- RomPath_CE000: 
-- RomSize_CE000: 0
-- RomPath_D0000: ./resources/roms/GP710508.ROM
-- RomSize_D0000: 65536
-- RomPath_D2000: 
+- RomPath_CC000: ./resources/roms/68008_EY0DOS0.BIN
+- RomSize_CC000: 8192
+- RomPath_CE000: ./resources/roms/68008_EY0DOS1.BIN
+- RomSize_CE000: 8192
+- RomPath_D0000: ./resources/roms/pascal.bin
+- RomSize_D0000: 32768
+- RomPath_D2000:
 - RomSize_D2000: 0
-- RomPath_D4000: 
+- RomPath_D4000:
 - RomSize_D4000: 0
-- RomPath_D6000: 
+- RomPath_D6000:
 - RomSize_D6000: 0
-- RomPath_D8000: 
-- RomSize_D8000: 0
-- RomPath_DA000: 
-- RomSize_DA000: 0
+- RomPath_D8000: ./resources/roms/68008_UFORM68K_LIB.BIN
+- RomSize_D8000: 8192
+- RomPath_DA000: ./resources/roms/68008_DEMO11_LIB.BIN
+- RomSize_DA000: 81920
 - RomPath_DC000: 
 - RomSize_DC000: 0
 - RomPath_DE000: 
 - RomSize_DE000: 0
-- RomPath_E0000: 
-- RomSize_E0000: 0
-- RomPath_E2000: 
+- RomPath_E0000: ./resources/roms/68008_EASS.BIN
+- RomSize_E0000: 32768
+- RomPath_E2000:
 - RomSize_E2000: 0
-- RomPath_E4000: 
+- RomPath_E4000:
 - RomSize_E4000: 0
-- RomPath_E6000: 
+- RomPath_E6000:
 - RomSize_E6000: 0
-- DriveA: ./resources/disks/jadossys.raw
-- DriveB: ./resources/disks/jados.img
-- DriveC: 
-- DriveD: 
-...
+# Do not use $E8000 - $EFFFF for ROM images as used as Grundprogram memory in GP 43
+# Do not use $E0000 - $EFFFF for ROM images as used as Grundprogram memory in GP 6.x/7.x
+# Do not use $F0000 - $FFFFF for ROM images as mapped for IO devices
+- DriveA: ./resources/disks/NKC1CPM68K.img
+- DriveB: ./resources/disks/NKC2CPM68K.img
+- DriveC:
+- DriveD:
+... 
