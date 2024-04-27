@@ -46,6 +46,7 @@ add_executable(${PROJECT_NAME} 68k-nkcemu.c
                       gdp64.c
                       col256.c
                       key.c
+                      mouse.c
                       cas.c
                       ioe.c
                       centronics.c

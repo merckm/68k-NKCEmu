@@ -52,6 +52,7 @@
 #include "m68k.h"
 #include "bankboot.h"
 #include "key.h"
+#include "mouse.h"
 #include "gdp64.h"
 #include "col256.h"
 #include "bankboot.h"
@@ -410,6 +411,22 @@ unsigned int cpu_read_byte(unsigned int address)
             return promer_p81_in();
         case PROM_A2:
             return promer_p82_in();
+        // case MAUS_HIX:
+        //     return mouse_p88_in();
+        case MAUS_LOX:
+            return mouse_p89_in();
+        case MAUS_HIY:
+            return mouse_p8A_in();
+        case MAUS_LOY:
+            return mouse_p8B_in();
+        case MAUS_UP:
+            return mouse_p8C_in();
+        case MAUS_DOWN:
+            return mouse_p8D_in();
+        case MAUS_RIGHT:
+            return mouse_p8E_in();
+        case MAUS_LEFT:
+            return mouse_p8F_in();
         case FLO2_CMD:
             return flo2_pC0_in();
         case FLO2_TRACK:
@@ -619,6 +636,30 @@ void cpu_write_byte(unsigned int address, unsigned int value)
         case PROM_A2:
             promer_p82_out(value & 0xff);
             return;
+        case MAUS_HIX:
+            mouse_p88_out(value & 0xff);
+            return;
+        case MAUS_LOX:
+            mouse_p89_out(value & 0xff);
+            return;
+        case MAUS_HIY:
+            mouse_p8A_out(value & 0xff);
+            return;
+        case MAUS_LOY:
+            mouse_p8B_out(value & 0xff);
+            return;
+        // case MAUS_UP:
+        //     mouse_p8C_out(value & 0xff);
+        //     return;
+        case MAUS_DOWN:
+            mouse_p8D_out(value & 0xff);
+            return;
+        case MAUS_RIGHT:
+            mouse_p8E_out(value & 0xff);
+            return;
+        // case MAUS_LEFT:
+        //     mouse_p8F_out(value & 0xff);
+        //     return;
         case FLO2_CMD:
             flo2_pC0_out(value & 0xff);
             return;
@@ -741,6 +782,7 @@ void cpu_pulse_reset(void)
     bank_reset();
     gdp64_reset();
     key_reset();
+    mouse_reset();
     col_reset();
     flo2_reset();
     cas_reset();

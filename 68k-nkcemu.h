@@ -49,6 +49,14 @@
 #define PROM_DAT CPU * 0x00ffff80L         // Promer data register
 #define PROM_A1 CPU * 0x00ffff81L          // Promer address LSB register
 #define PROM_A2 CPU * 0x00ffff82L          // Promer address MSB register
+#define MAUS_HIX CPU * 0x00ffff88L         // Maus Hardcopy X register (MSB)
+#define MAUS_LOX CPU * 0x00ffff89L         // Maus Hardcopy X register (LSB) / 8-Bit Port
+#define MAUS_HIY CPU * 0x00ffff8AL         // Maus Hardcopy Y register (MSB) / Ready flag
+#define MAUS_LOY CPU * 0x00ffff8BL         // Maus Hardcopy Y register (LSB) / Maus buttons
+#define MAUS_UP CPU * 0x00ffff8CL          // Maus up couter register
+#define MAUS_DOWN CPU * 0x00ffff8DL        // Maus down couter register
+#define MAUS_RIGHT CPU * 0x00ffff8EL       // Maus right couter register / Latch counters
+#define MAUS_LEFT CPU * 0x00ffff8FL        // Maus left couter register / Clear CounterS
 #define COLOR_A0 CPU * 0x00ffffA0L         // Forground COLOR used by GRUND
 #define COLOR_A1 CPU * 0x00ffffA1L         // Background COLOR used by GRUND
 #define FLO2_CMD CPU * 0x00ffffC0L         // FLO2 Command/status register

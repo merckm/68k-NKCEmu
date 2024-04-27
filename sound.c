@@ -13,7 +13,7 @@
  *   copies or substantial portions of the Software.                                  *
  *                                                                                    *
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR       *
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         * 
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         *
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE      *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER           *
  *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,    *
@@ -192,27 +192,27 @@ void sound_p41_out(BYTE data)
         int n_off = (data >> 3) & 0x01;
         int e_on = (g_sound.volA >> 4) & 0x01;
         log_debug("Channel A is %s Noise %s Envelope %s",
-                    (t_off == 1) ? "Off" : "On",
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         ayumi_set_mixer(&g_sound.ay, 0, t_off, n_off, e_on);
         // channel B
         t_off = (data >> 1) & 0x01;
         n_off = (data >> 4) & 0x01;
         e_on = (g_sound.volB >> 4) & 0x01;
         log_debug("Channel B is %s Noise %s Envelope %s",
-                    (t_off == 1) ? "Off" : "On",
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         ayumi_set_mixer(&g_sound.ay, 1, t_off, n_off, e_on);
         // channel C
         t_off = (data >> 2) & 0x01;
         n_off = (data >> 5) & 0x01;
         e_on = (g_sound.volC >> 4) & 0x01;
         log_debug("Channel C is %s Noise %s Envelope %s",
-                    (t_off == 1) ? "Off" : "On",
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         ayumi_set_mixer(&g_sound.ay, 2, t_off, n_off, e_on);
         break;
     case AY_AVOL:
@@ -222,10 +222,10 @@ void sound_p41_out(BYTE data)
         t_off = g_sound.ayStatus & 0x01;
         n_off = (g_sound.ayStatus >> 3) & 0x01;
         e_on = (g_sound.volA >> 4) & 0x01;
-        log_debug("Channel A is %s  Noise %s Envelope %s", 
-                    (t_off == 1) ? "Off" : "On", 
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+        log_debug("Channel A is %s  Noise %s Envelope %s",
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         log_debug("Mixer A:  T_Off:%d, N_Off: %d, e_On: %d", t_off, n_off, e_on);
         ayumi_set_mixer(&g_sound.ay, 0, t_off, n_off, e_on);
         break;
@@ -236,10 +236,10 @@ void sound_p41_out(BYTE data)
         t_off = (g_sound.ayStatus >> 1) & 0x01;
         n_off = (g_sound.ayStatus >> 4) & 0x01;
         e_on = (g_sound.volB >> 4) & 0x01;
-        log_debug("Channel B is %s Noise %s Envelope %s", 
-                    (t_off == 1) ? "Off" : "On",
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+        log_debug("Channel B is %s Noise %s Envelope %s",
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         log_debug("Mixer B:  T_Off:%d, N_Off: %d, e_On: %d", t_off, n_off, e_on);
         ayumi_set_mixer(&g_sound.ay, 1, t_off, n_off, e_on);
         break;
@@ -251,9 +251,9 @@ void sound_p41_out(BYTE data)
         n_off = (g_sound.ayStatus >> 5) & 0x01;
         e_on = (g_sound.volC >> 4) & 0x01;
         log_debug("Channel C is %s Noise %s Envelope %s",
-                    (t_off == 1) ? "Off" : "On",
-                    (n_off == 1) ? "Off" : "On",
-                    (e_on == 1) ? "On" : "Off");
+                  (t_off == 1) ? "Off" : "On",
+                  (n_off == 1) ? "Off" : "On",
+                  (e_on == 1) ? "On" : "Off");
         log_debug("Mixer C:  T_Off:%d, N_Off: %d, e_On: %d", t_off, n_off, e_on);
         ayumi_set_mixer(&g_sound.ay, 2, t_off, n_off, e_on);
         break;
@@ -322,10 +322,11 @@ void audio_callback(void *userData, Uint8 *stream, int length)
 
 void sound_reset(const char *soundDriver)
 {
-    if(g_sound.audioDev != 0) {
-        SDL_CloseAudioDevice(g_sound.audioDev);         // Close open sound device
+    if (g_sound.audioDev != 0)
+    {
+        SDL_CloseAudioDevice(g_sound.audioDev); // Close open sound device
         g_sound.audioDev = 0;
-        nkc_arr_free(g_sound.devices);                  // Free list of available sound devices
+        nkc_arr_free(g_sound.devices); // Free list of available sound devices
         g_sound.devices = NULL;
     }
     g_sound.ayStatus = 0xFF;
@@ -337,7 +338,7 @@ void sound_reset(const char *soundDriver)
         free(g_sound.sample_data);
         g_sound.sample_data = NULL;
     }
-    g_sound.sample_data = (float *) malloc(FRAME_COUNT * sizeof(float));
+    g_sound.sample_data = (float *)malloc(FRAME_COUNT * sizeof(float));
     memset(g_sound.sample_data, 0, sizeof(float) * FRAME_COUNT);
     if (g_sound.sample_data == NULL)
     {
@@ -372,30 +373,33 @@ void sound_reset(const char *soundDriver)
     }
 
     int selectedDevice = -1;
-    if(g_sound.devices != NULL)
-         nkc_arr_free(g_sound.devices);
-    g_sound.devices =  nkc_arr_new();
+    if (g_sound.devices != NULL)
+        nkc_arr_free(g_sound.devices);
+    g_sound.devices = nkc_arr_new();
     const char *nameAudioDevice;
     if (numAudioDevices >= 1)
     {
-        for( int i = 0; i < numAudioDevices; i++ )
+        for (int i = 0; i < numAudioDevices; i++)
         {
             nameAudioDevice = SDL_GetAudioDeviceName(i, 0);
-            if( soundDriver != NULL)
+            if (soundDriver != NULL)
             {
-                if( strncmp(nameAudioDevice,soundDriver,strlen(soundDriver)) == 0)
+                if (strncmp(nameAudioDevice, soundDriver, strlen(soundDriver)) == 0)
                     selectedDevice = i;
             }
-            nkc_arr_appendString(g_sound.devices,nameAudioDevice);
+            nkc_arr_appendString(g_sound.devices, nameAudioDevice);
         }
-        if( selectedDevice == -1 && soundDriver != NULL)
+        if (selectedDevice == -1 && soundDriver != NULL)
         {
             log_warn("No device with name %s found", soundDriver);
             return;
         }
 
-        nameAudioDevice =  SDL_GetAudioDeviceName(selectedDevice, 0),
-        log_info("Using audio devices %s", nameAudioDevice);
+        if (selectedDevice != -1)
+        {
+            nameAudioDevice = SDL_GetAudioDeviceName(selectedDevice, 0),
+            log_info("Using audio devices %s", nameAudioDevice);
+        }
     }
     if ((g_sound.audioDev = SDL_OpenAudioDevice(nameAudioDevice, 0, &format, &obtained, 0)) == 0)
     {
@@ -404,5 +408,4 @@ void sound_reset(const char *soundDriver)
     }
 
     SDL_PauseAudioDevice(g_sound.audioDev, 0);
-
 }

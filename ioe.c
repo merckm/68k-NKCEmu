@@ -123,9 +123,10 @@ void list_joysticks( const char *joyA, const char *joyB ) {
             }
         }
     }
-    log_info("Port A Joystick: %s", SDL_JoystickName(g_ioe.joy1));
-    log_info("Port B Joystick: %s", SDL_JoystickName(g_ioe.joy2));
-
+    if( g_ioe.joy1 != NULL )
+        log_info("Port A Joystick: %s", SDL_JoystickName(g_ioe.joy1));
+    if( g_ioe.joy2 != NULL )
+        log_info("Port B Joystick: %s", SDL_JoystickName(g_ioe.joy2));
 }
 
 /*
@@ -133,7 +134,7 @@ void list_joysticks( const char *joyA, const char *joyB ) {
  */
 BYTE ioe_p30_in()
 {
-	return g_ioe.porta_in;
+	return ~g_ioe.porta_in;
 }
 
 void ioe_p30_out(BYTE b)

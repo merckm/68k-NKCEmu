@@ -25,8 +25,8 @@
 #ifndef LOG_H 
 #define LOG_H
 
-#define LOGLEVEL_INFO
-//#define LOGLEVEL_DEBUG
+//#define LOGLEVEL_INFO
+#define LOGLEVEL_DEBUG
 
 #ifdef LOGLEVEL_DEBUG
 #define LOG_ERROR 1

@@ -350,7 +350,7 @@ char * nkc_normalize_path(char * base_path, const char * rel_path)
     }
     if( (strlen(rel_path) > 1) && (rel_path[1] == '.'))
     {
-        // If rel_path statrts with '../' remove last path element from base_path 
+        // If rel_path starts with '../' remove last path element from base_path 
         // and ignore first 3 characters 
         new_base_path = nkc_remove_last(base_path);
         rel_path_start = 3;
@@ -359,7 +359,7 @@ char * nkc_normalize_path(char * base_path, const char * rel_path)
     if( (strlen(rel_path) > 1) && 
         ( (rel_path[1] == '/') || (rel_path[1] == '\\') ) )
     {
-        // If rel_path statrts with './' ignore first 2 characters 
+        // If rel_path starts with './' ignore first 2 characters 
         rel_path_start = 2;
     }
 

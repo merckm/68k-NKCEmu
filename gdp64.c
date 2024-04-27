@@ -611,6 +611,7 @@ void gdp64_p60_out(BYTE b)
 //        return;
     g_gdp.actualReadPage = (b & 0x30) >> 4;
     g_gdp.actualWritePage = (b & 0xC0) >> 6;
+//    log_debug("GDP64: Set read page to %d, write page to %d", g_gdp.actualReadPage, g_gdp.actualWritePage);
     if (g_gdp.regs.seite != b)
     {
         g_gdp.contentChanged = 1;
@@ -645,7 +646,7 @@ BYTE gdp64_p70_in()
      * bit 3: position of the writing pen, 1 means out of the screen borders
      * bit 4: lightpen sequence IRQ
      * bit 5: vertical sync IRQ
-     * bit 6: ready sigbal IRQ
+     * bit 6: ready signal IRQ
      * bit 7: ORed bits 4-7
      */
     // Calculate state of 20ms vsync signal (VB)
@@ -725,6 +726,7 @@ void gdp64_p70_out(BYTE b)
         break;
 
     case 6: /* clear screen and reset coordinates */
+        log_debug("==== START ERASE  ===== GDP64: Clear screen and reset coordinates");
         clearScreen();
         g_gdp.regs.penX = 0;
         g_gdp.regs.penY = 0;
@@ -759,7 +761,7 @@ void gdp64_p70_out(BYTE b)
         break;
 
     case 14: /* set Y to 0 */
-    log_info("==== STATRT ERASE  ===== GDP64: Set Y to 0");
+    log_info("==== START ERASE  ===== GDP64: Set Y to 0");
         g_gdp.regs.penY = 0;
         break;
 
@@ -904,6 +906,7 @@ BYTE gdp64_p73_in()
 void gdp64_p73_out(BYTE b)
 {
     /* set CSIZE register of EF9366 */
+    log_debug("Set CSIZE to %x", b);
     g_gdp.regs.csize = b;
 }
 
