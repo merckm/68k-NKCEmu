@@ -14,7 +14,7 @@
  *   copies or substantial portions of the Software.                                  *
  *                                                                                    *
  *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR       *
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         * 
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,         *
  *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE      *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER           *
  *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,    *
@@ -76,6 +76,10 @@
 #define SER_STATUS (CPU * 0x00ffffF1L)           // SER Status Register
 #define SER_COMMAND (CPU * 0x00ffffF2L)          // SER Command Register
 #define SER_CONTROL (CPU * 0x00ffffF3L)          // SER Control Register
+#define FPGA_TIMER_BASE (CPU * 0x00ffffF4L)   // FPGA-Timer
+#define FPGA_TIMER_CTRL (CPU * 0x00ffffF4L)   // FPGA-Timer control register
+#define FPGA_TIMER_TRH (CPU * 0x00ffffF5L)   // FPGA-Timer timer/reload register high
+#define FPGA_TIMER_TRL (CPU * 0x00ffffF6L)   // FPGA-Timer timer/reload register low
 #define UNKNOWN (CPU * 0x00ffffffL)          // used during memory scan, will ignore
 
 /* ROM and RAM sizes */

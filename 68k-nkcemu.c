@@ -64,6 +64,7 @@
 #include "uhr.h"
 #include "ser.h"
 #include "mouse.h"
+#include "fpga_timer.h"
 
 /* Read/write macros */
 #define READ_BYTE(BASE, ADDR) (BASE)[ADDR]
@@ -456,6 +457,10 @@ unsigned int cpu_read_byte(unsigned int address)
         case MOUSE_LEFT:
         case MOUSE_RIGHT:
             return bus_mouse_in((address - MOUSE_BASE) & 0xFFu);
+        case FPGA_TIMER_CTRL:
+        case FPGA_TIMER_TRH:
+        case FPGA_TIMER_TRL:
+            return bus_fpga_timer_in((address - FPGA_TIMER_BASE) & 0xFFu);
         case UNKNOWN:
             return 0;
         default:
@@ -694,6 +699,11 @@ void cpu_write_byte(unsigned int address, unsigned int value)
         case MOUSE_LEFT:
         case MOUSE_RIGHT:
             bus_mouse_out((address - MOUSE_BASE) & 0xFFu, value & 0xFFu);
+            return;
+        case FPGA_TIMER_CTRL:
+        case FPGA_TIMER_TRH:
+        case FPGA_TIMER_TRL:
+            bus_fpga_timer_out((address - FPGA_TIMER_BASE) & 0xFFu, value & 0xFFu);
             return;
         case UNKNOWN:
             return;
