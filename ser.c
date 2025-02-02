@@ -278,6 +278,7 @@ int serial_read(char *buffer)
         {
             return -1;
         }
+        log_debug("SER: Read %d bytes", bytes_read);
         return bytes_read;
     }
     return -1;
@@ -291,6 +292,7 @@ int serial_read(char *buffer)
 BYTE_68K ser_pF0_in()
 {
     log_debug("SER: Data register read %02x", g_ser.receive_data);
+    g_ser.status &= 0xF7; // Set receive buffer empty
     return g_ser.receive_data;
 }
 
@@ -316,8 +318,8 @@ BYTE_68K ser_pF1_in()
     // first check if there is data to read
     if (g_ser.port != NULL)
     {
-        // if (g_ser.status & 0x08 != 0x00)        // if receive buffer is empty
-        // {
+        if ((g_ser.status & 0x08) == 0x00)        // if receive buffer is empty
+        {
             char buffer;
             if (serial_read(&buffer) > 0)
             {
@@ -325,7 +327,7 @@ BYTE_68K ser_pF1_in()
                 g_ser.receive_data = buffer;
                 g_ser.status |= 0x08;           // set receive buffer full
             }
-        // }
+        }
     }
     return g_ser.status;
 }
