@@ -55,7 +55,7 @@ extern "C"
     int nkc_arr_append(nkc_array* array, void* data);
     int nkc_arr_appendString(nkc_array* array, const char * str);
     void nkc_arr_free(nkc_array* array);
-    BYTE nkc_get_ascii(SDL_KeyboardEvent keyEvent);
+    BYTE_68K nkc_get_ascii(SDL_KeyboardEvent keyEvent);
     char* nkc_normalize_path(char * base_path, const char * rel_path);
     char* nkc_append_file(char * path, const char * file_name);
     char* nkc_append_path(char * path, const char * directory);

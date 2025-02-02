@@ -59,74 +59,74 @@ enum Register
 };
 
 // Get current Address
-BYTE sound_p40_in()
+BYTE_68K sound_p40_in()
 {
     return g_sound.ayAddress;
 }
 
 // Set Address
-void sound_p40_out(BYTE data)
+void sound_p40_out(BYTE_68K data)
 {
     g_sound.ayAddress = data;
     log_debug("Writing SOUND-Address %2X", data);
 }
 
-BYTE sound_p41_in()
+BYTE_68K sound_p41_in()
 {
     printf("Reading SOUND-Data from address %2X", g_sound.ayAddress);
-    BYTE rc = 0xff;
+    BYTE_68K rc = 0xff;
     switch (g_sound.ayAddress)
     {
     case AY_AFINE:
-        rc = (BYTE)(g_sound.toneA & 0x00FF);
+        rc = (BYTE_68K)(g_sound.toneA & 0x00FF);
         log_debug("Tone A : %d %d", g_sound.toneA, rc);
         break;
     case AY_ACOARSE:
-        rc = (BYTE)((g_sound.toneA & 0x0F00) >> 8);
+        rc = (BYTE_68K)((g_sound.toneA & 0x0F00) >> 8);
         log_debug("Tone A : %d %d", g_sound.toneA, rc);
         break;
     case AY_BFINE:
-        rc = (BYTE)(g_sound.toneB & 0x00FF);
+        rc = (BYTE_68K)(g_sound.toneB & 0x00FF);
         log_debug("Tone B : %d %d", g_sound.toneB, rc);
         break;
     case AY_BCOARSE:
-        rc = (BYTE)((g_sound.toneB & 0x0F00) >> 8);
+        rc = (BYTE_68K)((g_sound.toneB & 0x0F00) >> 8);
         log_debug("Tone B : %d %d", g_sound.toneB, rc);
         break;
     case AY_CFINE:
-        rc = (BYTE)(g_sound.toneC & 0x00FF);
+        rc = (BYTE_68K)(g_sound.toneC & 0x00FF);
         log_debug("Tone C : %d %d", g_sound.toneC, rc);
         break;
     case AY_CCOARSE:
-        rc = (BYTE)((g_sound.toneC & 0x0F00) >> 8);
+        rc = (BYTE_68K)((g_sound.toneC & 0x0F00) >> 8);
         log_debug("Tone C : %d %d", g_sound.toneC, rc);
         break;
     case AY_NOISEPER:
-        rc = (BYTE)(g_sound.periodNoise & 0x1F);
+        rc = (BYTE_68K)(g_sound.periodNoise & 0x1F);
         log_debug("Rauschperiode: %d %d", g_sound.periodNoise, rc);
         break;
     case AY_ENABLE:
-        rc = (BYTE)g_sound.ayStatus;
+        rc = (BYTE_68K)g_sound.ayStatus;
         log_debug("Enable Status: %d %d", g_sound.ayStatus, rc);
         break;
     case AY_AVOL:
-        rc = (BYTE)(g_sound.volA & 0x1F);
+        rc = (BYTE_68K)(g_sound.volA & 0x1F);
         log_debug("Volume A : %d %d", g_sound.volA, rc);
         break;
     case AY_BVOL:
-        rc = (BYTE)(g_sound.volB & 0x1F);
+        rc = (BYTE_68K)(g_sound.volB & 0x1F);
         log_debug("Volume B : %d %d", g_sound.volB, rc);
         break;
     case AY_CVOL:
-        rc = (BYTE)(g_sound.volC & 0x1F);
+        rc = (BYTE_68K)(g_sound.volC & 0x1F);
         log_debug("Volume C : %d %d", g_sound.volC, rc);
         break;
     case AY_EFINE:
-        rc = (BYTE)(g_sound.periodEnv & 0x00FF);
+        rc = (BYTE_68K)(g_sound.periodEnv & 0x00FF);
         log_debug("Periode Hüllkurve : %d %d", g_sound.periodEnv, rc);
         break;
     case AY_ECOARSE:
-        rc = (BYTE)((g_sound.periodEnv & 0xFF00) >> 8);
+        rc = (BYTE_68K)((g_sound.periodEnv & 0xFF00) >> 8);
         log_debug("Periode Hüllkurve : %d %d", g_sound.periodEnv, rc);
         break;
     case AY_ESHAPE:
@@ -145,7 +145,7 @@ BYTE sound_p41_in()
     return rc;
 }
 
-void sound_p41_out(BYTE data)
+void sound_p41_out(BYTE_68K data)
 {
     log_debug("Writing SOUND-Cmd %2X", data);
     switch (g_sound.ayAddress)
@@ -216,7 +216,7 @@ void sound_p41_out(BYTE data)
         ayumi_set_mixer(&g_sound.ay, 2, t_off, n_off, e_on);
         break;
     case AY_AVOL:
-        g_sound.volA = (BYTE)(data & 0x1F);
+        g_sound.volA = (BYTE_68K)(data & 0x1F);
         ayumi_set_volume(&g_sound.ay, 0, (g_sound.volA & 0x0F));
         log_debug("Volume A : %d", g_sound.volA);
         t_off = g_sound.ayStatus & 0x01;
@@ -230,7 +230,7 @@ void sound_p41_out(BYTE data)
         ayumi_set_mixer(&g_sound.ay, 0, t_off, n_off, e_on);
         break;
     case AY_BVOL:
-        g_sound.volB = (BYTE)(data & 0x1F);
+        g_sound.volB = (BYTE_68K)(data & 0x1F);
         ayumi_set_volume(&g_sound.ay, 1, (g_sound.volB & 0x0F));
         log_debug("Volume B : %d", g_sound.volB);
         t_off = (g_sound.ayStatus >> 1) & 0x01;
@@ -244,7 +244,7 @@ void sound_p41_out(BYTE data)
         ayumi_set_mixer(&g_sound.ay, 1, t_off, n_off, e_on);
         break;
     case AY_CVOL:
-        g_sound.volC = (BYTE)(data & 0x1F);
+        g_sound.volC = (BYTE_68K)(data & 0x1F);
         ayumi_set_volume(&g_sound.ay, 2, (g_sound.volC & 0x0F));
         log_debug("Volume C : %d", g_sound.volC);
         t_off = (g_sound.ayStatus >> 2) & 0x01;

@@ -35,8 +35,8 @@ extern "C"
 {
 #endif
 
-    BYTE bank_pC8_in();
-    void bank_pC8_out(BYTE data);
+    BYTE_68K bank_pC8_in();
+    void bank_pC8_out(BYTE_68K data);
     void bank_reset();
 
 #ifdef __cplusplus

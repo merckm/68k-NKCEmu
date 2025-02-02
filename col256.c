@@ -37,24 +37,24 @@ extern config g_config;
 
 // MC6845 Address Register
 // Can not be read
-BYTE col_pCC_in()
+BYTE_68K col_pCC_in()
 {
     return 0;
 }
 
-void col_pCC_out(BYTE data)
+void col_pCC_out(BYTE_68K data)
 {
     g_col.col_adr = data & 0x1F;
 }
 
 // MC6845 Data Register adressed by Adress egister
 // Can obnly sometimes be read, currently not supported
-BYTE col_pCD_in()
+BYTE_68K col_pCD_in()
 {
     return 0;
 }
 
-void col_pCD_out(BYTE data)
+void col_pCD_out(BYTE_68K data)
 {
     switch (g_col.col_adr)
     {
@@ -120,12 +120,12 @@ void col_pCD_out(BYTE data)
 }
 
 // Col256 page select
-BYTE col_pCE_in()
+BYTE_68K col_pCE_in()
 {
     return g_col.col_page;
 }
 
-void col_pCE_out(BYTE data)
+void col_pCE_out(BYTE_68K data)
 {
     if ((data & 0x80) != 0)
         g_col.col_active = true;
@@ -171,7 +171,7 @@ int col_init(void)
     return SDL_GetWindowID(g_col.col_win);
 }
 
-void col_setPixel(int address, BYTE data)
+void col_setPixel(int address, BYTE_68K data)
 {
     int x, y;
     Uint8 R, G, B;
@@ -201,27 +201,27 @@ void col_setPixel(int address, BYTE data)
     }
 }
 
-void col_setWord(int address, WORD data)
+void col_setWord(int address, WORD_68K data)
 {
-    BYTE hi = (data & 0xFF00) >> 8;
-    BYTE lo = (data & 0x00FF);
+    BYTE_68K hi = (data & 0xFF00) >> 8;
+    BYTE_68K lo = (data & 0x00FF);
     col_setPixel(address, hi);
     col_setPixel(address + 1, lo);
 }
 
-void col_setLong(int address, LONG data)
+void col_setLong(int address, LONG_68K data)
 {
-    BYTE byte1 = (data & 0xFF000000) >> 24;
-    BYTE byte2 = (data & 0x00FF0000) >> 16;
-    BYTE byte3 = (data & 0x0000FF00) >> 8;
-    BYTE byte4 = (data & 0x000000FF);
+    BYTE_68K byte1 = (data & 0xFF000000) >> 24;
+    BYTE_68K byte2 = (data & 0x00FF0000) >> 16;
+    BYTE_68K byte3 = (data & 0x0000FF00) >> 8;
+    BYTE_68K byte4 = (data & 0x000000FF);
     col_setPixel(address, byte1);
     col_setPixel(address + 1, byte2);
     col_setPixel(address + 2, byte3);
     col_setPixel(address + 3, byte4);
 }
 
-BYTE col_getPixel(int address)
+BYTE_68K col_getPixel(int address)
 {
     if (!g_col.col_active)
         return 0;
@@ -230,24 +230,24 @@ BYTE col_getPixel(int address)
     return g_col.col_mem[addr];
 }
 
-WORD col_getWord(int address)
+WORD_68K col_getWord(int address)
 {
     if (!g_col.col_active)
         return 0;
 
     int addr = g_col.col_page * 0x4000 + (address - 0xEC000);
-    WORD res = g_col.col_mem[addr] << 8;
+    WORD_68K res = g_col.col_mem[addr] << 8;
     res += g_col.col_mem[addr + 1];
     return res;
 }
 
-LONG col_getLong(int address)
+LONG_68K col_getLong(int address)
 {
     if (!g_col.col_active)
         return 0;
 
     int addr = g_col.col_page * 0x4000 + (address - 0xEC000);
-    LONG res = g_col.col_mem[addr] << 24;
+    LONG_68K res = g_col.col_mem[addr] << 24;
     res += g_col.col_mem[addr + 1] << 16;
     res += g_col.col_mem[addr + 2] << 8;
     res += g_col.col_mem[addr + 3];

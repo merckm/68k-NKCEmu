@@ -72,16 +72,16 @@
 #define DRIVE_MAXI_DD	     0b00000000
 
 typedef struct {
-    BYTE status;
-    BYTE drive;
-    BYTE active_drive;
-    BYTE akt_track;
-    BYTE side;
-    BYTE track;
-    BYTE sector;
-    BYTE dataword;
-    BYTE data[SEC_SIZE];
-    BYTE trackdata[TRACK_SIZE];
+    BYTE_68K status;
+    BYTE_68K drive;
+    BYTE_68K active_drive;
+    BYTE_68K akt_track;
+    BYTE_68K side;
+    BYTE_68K track;
+    BYTE_68K sector;
+    BYTE_68K dataword;
+    BYTE_68K data[SEC_SIZE];
+    BYTE_68K trackdata[TRACK_SIZE];
     int offset;
     int data_size;
 
@@ -103,16 +103,16 @@ extern "C"
 {
 #endif
 
-    BYTE flo2_pC0_in(); /* Status register */
-    void flo2_pC0_out(BYTE data);
-    BYTE flo2_pC1_in(); /* Track register */
-    void flo2_pC1_out(BYTE data);
-    BYTE flo2_pC2_in(); /* Sector register */
-    void flo2_pC2_out(BYTE data);
-    BYTE flo2_pC3_in(); /* Data register */
-    void flo2_pC3_out(BYTE data);
-    BYTE flo2_pC4_in(); /* Drive type special register */
-    void flo2_pC4_out(BYTE data);
+    BYTE_68K flo2_pC0_in(); /* Status register */
+    void flo2_pC0_out(BYTE_68K data);
+    BYTE_68K flo2_pC1_in(); /* Track register */
+    void flo2_pC1_out(BYTE_68K data);
+    BYTE_68K flo2_pC2_in(); /* Sector register */
+    void flo2_pC2_out(BYTE_68K data);
+    BYTE_68K flo2_pC3_in(); /* Data register */
+    void flo2_pC3_out(BYTE_68K data);
+    BYTE_68K flo2_pC4_in(); /* Drive type special register */
+    void flo2_pC4_out(BYTE_68K data);
     void flo2_reset();
     void flo2_close_drives();
     void flo2_open_drive(int drive_num, const char *fname);

@@ -36,17 +36,17 @@
 
 typedef struct
 {
-    BYTE io_port;
+    BYTE_68K io_port;
     uint16_t hardcopy_x;
     uint16_t hardcopy_y;
     int32_t mouse_ref_x;
     int32_t mouse_ref_y;
     uint16_t mouse_buttons;
-    BYTE mouse_flags;
-    BYTE mouse_up;
-    BYTE mouse_down;
-    BYTE mouse_left;
-    BYTE mouse_right;
+    BYTE_68K mouse_flags;
+    BYTE_68K mouse_up;
+    BYTE_68K mouse_down;
+    BYTE_68K mouse_left;
+    BYTE_68K mouse_right;
 } mouse;
 
 #ifdef __cplusplus
@@ -54,30 +54,30 @@ extern "C"
 {
 #endif
 
-    typedef unsigned short WORD; /* 16 bit unsigned */
-    typedef unsigned char BYTE;  /* 8 bit unsigned */
+    typedef unsigned short WORD_68K; /* 16 bit unsigned */
+    typedef unsigned char BYTE_68K;  /* 8 bit unsigned */
 
-    // BYTE keyReg68 = 0x80; /* initialize with a value which has bit 7 set */
-    // BYTE keyReg69 = 0xE7; /* DIL settings, here standard is used */
+    // BYTE_68K keyReg68 = 0x80; /* initialize with a value which has bit 7 set */
+    // BYTE_68K keyReg69 = 0xE7; /* DIL settings, here standard is used */
 
-    // BYTE mouse_p88_in();                // not used
-    void mouse_p88_out(BYTE data);
-    BYTE mouse_p89_in();
-    void mouse_p89_out(BYTE data);
-    BYTE mouse_p8A_in();
-    void mouse_p8A_out(BYTE data);
-    BYTE mouse_p8B_in();
-    void mouse_p8B_out(BYTE data);
-    BYTE mouse_p8C_in();
-    // void mouse_p8C_out(BYTE data);      // not used
-    BYTE mouse_p8D_in();
-    void mouse_p8D_out(BYTE data);
-    BYTE mouse_p8E_in();
-    void mouse_p8E_out(BYTE data);
-    BYTE mouse_p8F_in();
-    // void mouse_p8F_out(BYTE data);      // not used
+    // BYTE_68K mouse_p88_in();                // not used
+    void mouse_p88_out(BYTE_68K data);
+    BYTE_68K mouse_p89_in();
+    void mouse_p89_out(BYTE_68K data);
+    BYTE_68K mouse_p8A_in();
+    void mouse_p8A_out(BYTE_68K data);
+    BYTE_68K mouse_p8B_in();
+    void mouse_p8B_out(BYTE_68K data);
+    BYTE_68K mouse_p8C_in();
+    // void mouse_p8C_out(BYTE_68K data);      // not used
+    BYTE_68K mouse_p8D_in();
+    void mouse_p8D_out(BYTE_68K data);
+    BYTE_68K mouse_p8E_in();
+    void mouse_p8E_out(BYTE_68K data);
+    BYTE_68K mouse_p8F_in();
+    // void mouse_p8F_out(BYTE_68K data);      // not used
     void mouse_reset();
-    void mouse_event(SDL_Event *event);
+    void mouse_event_sdl(SDL_Event *event);
 
 #ifdef __cplusplus
 }

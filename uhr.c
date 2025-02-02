@@ -43,37 +43,37 @@ uhr g_uhr;
  * Internal helpers
  */
 
-BYTE toBCD(int value)
+BYTE_68K toBCD(int value)
 {
 
-	BYTE val = (BYTE)value % 100;
+	BYTE_68K val = (BYTE_68K)value % 100;
 
-	BYTE highDecimal = val / 10;
-	BYTE lowDecimal = val % 10;
+	BYTE_68K highDecimal = val / 10;
+	BYTE_68K lowDecimal = val % 10;
 
 	return (highDecimal << 4) + lowDecimal;
 }
 
-BYTE fromBCD(BYTE value)
+BYTE_68K fromBCD(BYTE_68K value)
 {
 
 	return ((value >> 4) * 10 + (value & 0x0F));
 }
 
-BYTE rotateRight(BYTE x)
+BYTE_68K rotateRight(BYTE_68K x)
 {
 
-	BYTE shifted = x >> 1;
-	BYTE rot_bits = x << 7;
+	BYTE_68K shifted = x >> 1;
+	BYTE_68K rot_bits = x << 7;
 
 	return shifted | rot_bits;
 }
 
-BYTE rotateLeft(BYTE x)
+BYTE_68K rotateLeft(BYTE_68K x)
 {
 
-	BYTE shifted = x << 1;
-	BYTE rot_bits = x >> 7;
+	BYTE_68K shifted = x << 1;
+	BYTE_68K rot_bits = x >> 7;
 
 	return shifted | rot_bits;
 }
@@ -95,10 +95,10 @@ const char *byte_to_binary(int x)
 /*
  * UHR functions
  */
-BYTE uhr_pFE_in()
+BYTE_68K uhr_pFE_in()
 {
 	log_debug("Reading UHR with bitcounter %d", g_uhr.bitCounter);	
-	BYTE ret = 0;
+	BYTE_68K ret = 0;
 	if((g_uhr.bitCounter % 8) == 0) {
 		switch (g_uhr.bitCounter / 8)
 		{
@@ -135,12 +135,12 @@ BYTE uhr_pFE_in()
 	return (ret);
 }
 
-void uhr_pFE_out(BYTE b)
+void uhr_pFE_out(BYTE_68K b)
 {
 	bool enable = (b & 0x04) != 0;
 	bool pulse = (b & 0x02) != 0;
 	log_debug("UHR set %01X Enable=%01X Pulse=%01X Mode =%2d", b, enable, pulse, g_uhr.mode);
-	BYTE data = !(b & 0x01);
+	BYTE_68K data = !(b & 0x01);
 
 	if (enable && !g_uhr.enable)
 	{ 											// Enable clock chip
@@ -204,10 +204,10 @@ void uhr_pFE_out(BYTE b)
 		}
 		else
 		{ // receiving clock data
-			g_uhr.receiveByte = (BYTE)(g_uhr.receiveByte << 1) | data;
+			g_uhr.receiveByte = (BYTE_68K)(g_uhr.receiveByte << 1) | data;
 			if ((g_uhr.bitCounter % 8) == 0)
 			{
-				BYTE val = fromBCD(g_uhr.receiveByte);
+				BYTE_68K val = fromBCD(g_uhr.receiveByte);
 				switch (g_uhr.bitCounter / 8)
 				{
 				case 6:

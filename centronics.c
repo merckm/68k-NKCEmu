@@ -39,22 +39,22 @@ extern config g_config;
 /*
  * Implementation of the centronics interface
  */
-BYTE cent_p48_in()
+BYTE_68K cent_p48_in()
 {
   return 0;
 }
 
-void cent_p48_out(BYTE data)
+void cent_p48_out(BYTE_68K data)
 {
   g_cent.daten = data;
 }
 
-BYTE cent_p49_in()
+BYTE_68K cent_p49_in()
 {
   return g_cent.status;
 }
 
-void cent_p49_out(BYTE data)
+void cent_p49_out(BYTE_68K data)
 {
   if((data & 0x01) == 0) {      // Strobe
     if (g_cent.list_file != 0 && g_cent.daten != 0)

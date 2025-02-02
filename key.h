@@ -30,8 +30,8 @@
 
 typedef struct
 {
-    BYTE keyReg68; /* Status */
-    BYTE keyReg69; /* DIL settings */
+    BYTE_68K keyReg68; /* Status */
+    BYTE_68K keyReg69; /* DIL settings */
 
     char *clipboardText;
     size_t clipboardLength;
@@ -43,16 +43,16 @@ extern "C"
 {
 #endif
 
-    typedef unsigned short WORD; /* 16 bit unsigned */
-    typedef unsigned char BYTE;  /* 8 bit unsigned */
+    typedef unsigned short WORD_68K; /* 16 bit unsigned */
+    typedef unsigned char BYTE_68K;  /* 8 bit unsigned */
 
-    // BYTE keyReg68 = 0x80; /* initialize with a value which has bit 7 set */
-    // BYTE keyReg69 = 0xE7; /* DIL settings, here standard is used */
+    // BYTE_68K keyReg68 = 0x80; /* initialize with a value which has bit 7 set */
+    // BYTE_68K keyReg69 = 0xE7; /* DIL settings, here standard is used */
 
-    BYTE key_p68_in();
-    void key_p68_out(BYTE data);
-    BYTE key_p69_in();
-    void key_p69_out(BYTE data);
+    BYTE_68K key_p68_in();
+    void key_p68_out(BYTE_68K data);
+    BYTE_68K key_p69_in();
+    void key_p69_out(BYTE_68K data);
     void key_reset();
     void key_event(SDL_Event *event);
 

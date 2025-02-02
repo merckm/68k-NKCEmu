@@ -52,8 +52,8 @@
 #define TRUE 1
 #endif
 
-typedef unsigned int LONG; /* 32 bit unsigned */
-typedef unsigned short WORD; /* 16 bit unsigned */
-typedef unsigned char BYTE;  /* 8 bit unsigned */
+typedef unsigned int LONG_68K; /* 32 bit unsigned */
+typedef unsigned short WORD_68K; /* 16 bit unsigned */
+typedef unsigned char BYTE_68K;  /* 8 bit unsigned */
 
 #endif /* HEADER__NKC */

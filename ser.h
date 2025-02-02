@@ -24,11 +24,39 @@
 
 #ifndef HEADER__SER
 #define HEADER__SER
-#include <termios.h>
+#include "log.h"
 #include "nkc.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <termios.h>
+#include <fcntl.h>
+#include <unistd.h>
+#endif
 
 typedef struct {
-    speed_t brate;
+#ifdef _WIN32
+    HANDLE handle;
+#else
+    int fd;
+#endif
+} SerialPort;
+
+typedef struct {
+    SerialPort* port;
+    BYTE_68K receive_data;
+    BYTE_68K transmit_data;
+    BYTE_68K status;
+    BYTE_68K command;
+    BYTE_68K control;
+    int brate;
+    int char_size;
+    int stop_bits;
+    bool interrupt_enable;
 } ser;
 
 #ifdef __cplusplus
@@ -36,15 +64,16 @@ extern "C"
 {
 #endif
 
-    BYTE ser_pF0_in();
-    void ser_pF0_out(BYTE data);
-    BYTE ser_pF1_in();
-    void ser_pF1_out(BYTE data);
-    BYTE ser_pF2_in();
-    void ser_pF2_out(BYTE data);
-    BYTE ser_pF3_in();
-    void ser_pF3_out(BYTE data);
+    BYTE_68K ser_pF0_in();
+    void ser_pF0_out(BYTE_68K data);
+    BYTE_68K ser_pF1_in();
+    void ser_pF1_out(BYTE_68K data);
+    BYTE_68K ser_pF2_in();
+    void ser_pF2_out(BYTE_68K data);
+    BYTE_68K ser_pF3_in();
+    void ser_pF3_out(BYTE_68K data);
     void ser_reset();
+    void ser_setPort(const char *portname);
 
 #ifdef __cplusplus
 }

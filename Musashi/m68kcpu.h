@@ -1667,7 +1667,7 @@ static inline void m68ki_stack_frame_1000(uint pc, uint sr, uint vector)
 {
 	/* VERSION
 	 * NUMBER
-	 * INTERNAL INFORMATION, 16 WORDS
+	 * INTERNAL INFORMATION, 16 WORD_68KS
 	 */
 	m68ki_fake_push_32();
 	m68ki_fake_push_32();
@@ -1699,7 +1699,7 @@ static inline void m68ki_stack_frame_1000(uint pc, uint sr, uint vector)
 	/* FAULT ADDRESS */
 	m68ki_push_32(0);
 
-	/* SPECIAL STATUS WORD */
+	/* SPECIAL STATUS WORD_68K */
 	m68ki_push_16(0);
 
 	/* 1000, VECTOR OFFSET */

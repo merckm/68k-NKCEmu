@@ -30,8 +30,8 @@
 
 typedef struct {
 	FILE *list_file;
-	BYTE daten;
-	BYTE status;
+	BYTE_68K daten;
+	BYTE_68K status;
 } cent;
 
 #ifdef __cplusplus
@@ -39,13 +39,13 @@ extern "C"
 {
 #endif
 
-  typedef unsigned short WORD; /* 16 bit unsigned */
-  typedef unsigned char BYTE;  /* 8 bit unsigned */
+  typedef unsigned short WORD_68K; /* 16 bit unsigned */
+  typedef unsigned char BYTE_68K;  /* 8 bit unsigned */
 
-  BYTE cent_p48_in();
-  void cent_p48_out(BYTE data);
-  BYTE cent_p49_in();
-  void cent_p49_out(BYTE data);
+  BYTE_68K cent_p48_in();
+  void cent_p48_out(BYTE_68K data);
+  BYTE_68K cent_p49_in();
+  void cent_p49_out(BYTE_68K data);
   void cent_reset();
   void cent_setFile(const char *filename);
 

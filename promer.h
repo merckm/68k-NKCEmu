@@ -31,8 +31,8 @@
 
 typedef struct {
 	FILE *prom_file;
-    BYTE daten;
-    WORD adr;
+    BYTE_68K daten;
+    WORD_68K adr;
     int size;
     bool led;
     bool read;
@@ -45,15 +45,15 @@ extern "C"
 {
 #endif
 
-    typedef unsigned short WORD; /* 16 bit unsigned */
-    typedef unsigned char BYTE;  /* 8 bit unsigned */
+    typedef unsigned short WORD_68K; /* 16 bit unsigned */
+    typedef unsigned char BYTE_68K;  /* 8 bit unsigned */
 
-    BYTE promer_p80_in();
-    void promer_p80_out(BYTE data);
-    BYTE promer_p81_in();
-    void promer_p81_out(BYTE data);
-    BYTE promer_p82_in();
-    void promer_p82_out(BYTE data);
+    BYTE_68K promer_p80_in();
+    void promer_p80_out(BYTE_68K data);
+    BYTE_68K promer_p81_in();
+    void promer_p81_out(BYTE_68K data);
+    BYTE_68K promer_p82_in();
+    void promer_p82_out(BYTE_68K data);
     void promer_reset();
     void promer_setFile(const char *filename);
 

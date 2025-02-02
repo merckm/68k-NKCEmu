@@ -50,6 +50,7 @@ add_executable(${PROJECT_NAME} 68k-nkcemu.c
                       cas.c
                       ioe.c
                       centronics.c
+                      ser.c
                       flo2.c
                       crc.c
                       promer.c 

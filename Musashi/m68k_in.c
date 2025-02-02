@@ -9249,7 +9249,7 @@ M68KMAKE_OP(rte, 32, ., .)
 				m68ki_fake_pull_16();	/* unused/reserved */
 				m68ki_fake_pull_16();	/* instruction input buffer */
 				m68ki_fake_pull_32();	/* internal information, 16 words */
-				m68ki_fake_pull_32();	/* (actually, we use 8 DWORDs) */
+				m68ki_fake_pull_32();	/* (actually, we use 8 DWORD_68Ks) */
 				m68ki_fake_pull_32();
 				m68ki_fake_pull_32();
 				m68ki_fake_pull_32();

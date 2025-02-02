@@ -33,22 +33,22 @@
 #include "nkc.h"
 
 typedef struct {
-    BYTE status;                /* status of the gdp */
-    BYTE ctrl1;                 /* CTRL1 register */
-    BYTE ctrl2;                 /* CTRL2 register */
+    BYTE_68K status;                /* status of the gdp */
+    BYTE_68K ctrl1;                 /* CTRL1 register */
+    BYTE_68K ctrl2;                 /* CTRL2 register */
     short penX;                   /* Pen X and Y position */
     short penY;
-    BYTE csize;                 /* CSIZE register */
-    BYTE deltax;                /* DELTAX register */
-    BYTE deltay;                /* DELTAY register */
-    BYTE seite;                 /* PAGE register */
-    BYTE scroll;                /* HARD-SCROLL register */
+    BYTE_68K csize;                 /* CSIZE register */
+    BYTE_68K deltax;                /* DELTAX register */
+    BYTE_68K deltay;                /* DELTAY register */
+    BYTE_68K seite;                 /* PAGE register */
+    BYTE_68K scroll;                /* HARD-SCROLL register */
 } gdp64_registers;
 
 typedef struct {
     int x;
     int y;
-    BYTE csize;
+    BYTE_68K csize;
     int counter;
     bool isVisible;
     bool isOff;
@@ -74,35 +74,35 @@ extern "C"
 {
 #endif
 
-    BYTE gdp64_p60_in();
-    void gdp64_p60_out(BYTE data);
-    BYTE gdp64_p61_in();
-    void gdp64_p61_out(BYTE b);
-    BYTE gdp64_p70_in();
-    void gdp64_p70_out(BYTE data);
-    BYTE gdp64_p71_in();
-    void gdp64_p71_out(BYTE data);
-    BYTE gdp64_p72_in();
-    void gdp64_p72_out(BYTE data);
+    BYTE_68K gdp64_p60_in();
+    void gdp64_p60_out(BYTE_68K data);
+    BYTE_68K gdp64_p61_in();
+    void gdp64_p61_out(BYTE_68K b);
+    BYTE_68K gdp64_p70_in();
+    void gdp64_p70_out(BYTE_68K data);
+    BYTE_68K gdp64_p71_in();
+    void gdp64_p71_out(BYTE_68K data);
+    BYTE_68K gdp64_p72_in();
+    void gdp64_p72_out(BYTE_68K data);
     void gdp64_p72_out_word(int data);
-    BYTE gdp64_p73_in();
-    void gdp64_p73_out(BYTE data);
-    BYTE gdp64_p75_in();
-    void gdp64_p75_out(BYTE data);
-    BYTE gdp64_p77_in();
-    void gdp64_p77_out(BYTE data);
-    BYTE gdp64_p78_in();
+    BYTE_68K gdp64_p73_in();
+    void gdp64_p73_out(BYTE_68K data);
+    BYTE_68K gdp64_p75_in();
+    void gdp64_p75_out(BYTE_68K data);
+    BYTE_68K gdp64_p77_in();
+    void gdp64_p77_out(BYTE_68K data);
+    BYTE_68K gdp64_p78_in();
     int gdp64_p78_in_word();
-    void gdp64_p78_out(BYTE data);
+    void gdp64_p78_out(BYTE_68K data);
     void gdp64_p78_out_word(int data);
-    BYTE gdp64_p79_in();
-    void gdp64_p79_out(BYTE data);
-    BYTE gdp64_p7A_in();
+    BYTE_68K gdp64_p79_in();
+    void gdp64_p79_out(BYTE_68K data);
+    BYTE_68K gdp64_p7A_in();
     int gdp64_p7A_in_word();
-    void gdp64_p7A_out(BYTE data);
+    void gdp64_p7A_out(BYTE_68K data);
     void gdp64_p7A_out_word(int data);
-    BYTE gdp64_p7B_in();
-    void gdp64_p7B_out(BYTE data);
+    BYTE_68K gdp64_p7B_in();
+    void gdp64_p7B_out(BYTE_68K data);
     void gdp64_gui_draw_string(int x, int y, int size, const char * str);
     void gdp64_gui_input_string(int x, int y, int size, int len, char * str);
     int  gdp64_init();
@@ -110,7 +110,7 @@ extern "C"
     void gdp64_clear_screen();
     void gdp64_save_regs();
     void gdp64_restore_regs();
-    void gdp64_set_vsync(BYTE vs);
+    void gdp64_set_vsync(BYTE_68K vs);
     void gdp64_event(SDL_Event* event);
 
 #ifdef __cplusplus

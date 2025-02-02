@@ -39,40 +39,40 @@ extern config g_config;
 /*
  * MOUSE functions
  */
-void mouse_p88_out(BYTE b)
+void mouse_p88_out(BYTE_68K b)
 {
     /* Set MSB of X position for hardcopy */
     g_mouse.hardcopy_x = (g_mouse.hardcopy_x & 0x00FF) | (b << 8);
 	return;
 }
 
-BYTE mouse_p89_in()
+BYTE_68K mouse_p89_in()
 {
      /* return 8-bit port reading */
 	return g_mouse.io_port;
 }
 
-void mouse_p89_out(BYTE b)
+void mouse_p89_out(BYTE_68K b)
 {
     /* Set LSB of X position for hardcopy */
     g_mouse.hardcopy_x = (g_mouse.hardcopy_x & 0xFF00) | b;
 	return;
 }
 
-BYTE mouse_p8A_in()
+BYTE_68K mouse_p8A_in()
 {
      /* return ready flag and data-bit */
 	return g_mouse.mouse_flags;
 }
 
-void mouse_p8A_out(BYTE b)
+void mouse_p8A_out(BYTE_68K b)
 {
     /* Set MSB of X position for hardcopy */
     g_mouse.hardcopy_y = (g_mouse.hardcopy_y & 0x00FF) | (b << 8);
 	return;
 }
 
-BYTE mouse_p8B_in()
+BYTE_68K mouse_p8B_in()
 {
     int32_t x,y;
      /* return buttons of mouse */
@@ -84,26 +84,26 @@ BYTE mouse_p8B_in()
 	return g_mouse.mouse_buttons;
 }
 
-void mouse_p8B_out(BYTE b)
+void mouse_p8B_out(BYTE_68K b)
 {
     /* Set LSB of Y position for hardcopy */
     g_mouse.hardcopy_y = (g_mouse.hardcopy_y & 0xFF00) | b;
 	return;
 }
 
-BYTE mouse_p8C_in()
+BYTE_68K mouse_p8C_in()
 {
      /* return mouse up counter */
 	return g_mouse.mouse_up;
 }
 
-BYTE mouse_p8D_in()
+BYTE_68K mouse_p8D_in()
 {
      /* return mouse down counter */
 	return g_mouse.mouse_down;
 }
 
-void mouse_p8D_out(BYTE b)
+void mouse_p8D_out(BYTE_68K b)
 {
     /* Store counters */
     int x,y;
@@ -127,13 +127,13 @@ void mouse_p8D_out(BYTE b)
 	return;
 }
 
-BYTE mouse_p8E_in()
+BYTE_68K mouse_p8E_in()
 {
      /* return mouse right counter */
 	return g_mouse.mouse_right;
 }
 
-void mouse_p8E_out(BYTE b)
+void mouse_p8E_out(BYTE_68K b)
 {
     /* Clear counters */
     int x,y;
@@ -143,13 +143,13 @@ void mouse_p8E_out(BYTE b)
 	return;
 }
 
-BYTE mouse_p8F_in()
+BYTE_68K mouse_p8F_in()
 {
      /* return mouse left counter */
 	return g_mouse.mouse_left;
 }
 
-void mouse_event(SDL_Event* event)
+void mouse_event_sdl(SDL_Event* event)
 {
     // if (event->type == SDL_MOUSEMOTION)
     // {

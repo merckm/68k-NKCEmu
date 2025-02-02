@@ -44,10 +44,10 @@ extern "C"
 {
 #endif
 
-	BYTE cas_pCA_in();
-	void cas_pCA_out(BYTE data);
-	BYTE cas_pCB_in();
-	void cas_pCB_out(BYTE data);
+	BYTE_68K cas_pCA_in();
+	void cas_pCA_out(BYTE_68K data);
+	BYTE_68K cas_pCB_in();
+	void cas_pCB_out(BYTE_68K data);
 	void cas_reset();
 	void cas_setFile(const char *filename);
 	void cas_findRecordings();

@@ -38,7 +38,7 @@
 ioe g_ioe;
 
 // Inernal helpers
-BYTE getTasten(SDL_KeyboardEvent keyEvent)
+BYTE_68K getTasten(SDL_KeyboardEvent keyEvent)
 {
     SDL_Keycode keycode = keyEvent.keysym.sym;
     Uint16 mod = keyEvent.keysym.mod;
@@ -132,36 +132,36 @@ void list_joysticks( const char *joyA, const char *joyB ) {
 /*
  * IOE functions
  */
-BYTE ioe_p30_in()
+BYTE_68K ioe_p30_in()
 {
 	return ~g_ioe.porta_in;
 }
 
-void ioe_p30_out(BYTE b)
+void ioe_p30_out(BYTE_68K b)
 {
 	g_ioe.porta_out = b;
     log_debug("Port A output: %d", b);
 	return; /* no output */
 }
 
-BYTE ioe_p31_in()
+BYTE_68K ioe_p31_in()
 {
 	return g_ioe.portb_in;
 }
 
-void ioe_p31_out(BYTE b)
+void ioe_p31_out(BYTE_68K b)
 {
 	g_ioe.portb_out = b;
     log_debug("Port B output: %d", b);
 	return;
 }
 
-BYTE ioe_get_p30()
+BYTE_68K ioe_get_p30()
 {
     return g_ioe.porta_out;
 }
 
-BYTE ioe_get_p31()
+BYTE_68K ioe_get_p31()
 {
     return g_ioe.portb_out;
 }
@@ -170,18 +170,18 @@ void ioe_event(SDL_Event* event)
 {
     if (event->type == SDL_KEYDOWN)
     {
-        BYTE mask = getTasten(event->key);
+        BYTE_68K mask = getTasten(event->key);
         g_ioe.porta_in = g_ioe.porta_in | mask;
         g_ioe.portb_in = g_ioe.portb_in | mask;
     }
     if (event->type == SDL_KEYUP)
     {
-        BYTE mask = ~getTasten(event->key);
+        BYTE_68K mask = ~getTasten(event->key);
         g_ioe.porta_in = g_ioe.porta_in & mask;
         g_ioe.portb_in = g_ioe.portb_in & mask;
     }
     if (event->type == SDL_JOYAXISMOTION) {
-        BYTE* ioe_port;
+        BYTE_68K* ioe_port;
 //        log_debug("Joystick axis %d - %d", event->jaxis.axis, event->jaxis.value);
         if ( event->jaxis.which == g_ioe.porta_joy_index )
             ioe_port = &g_ioe.porta_in;
@@ -214,7 +214,7 @@ void ioe_event(SDL_Event* event)
     if ( (event->type == SDL_JOYBUTTONDOWN)
          ||
          (event->type == SDL_JOYBUTTONUP) ) {
-        BYTE* ioe_port;
+        BYTE_68K* ioe_port;
         if ( event->jaxis.which == g_ioe.porta_joy_index )
             ioe_port = &g_ioe.porta_in;
         if ( event->jaxis.which == g_ioe.portb_joy_index )
@@ -228,13 +228,13 @@ void ioe_event(SDL_Event* event)
             {
                 if( event->type == SDL_JOYBUTTONDOWN)       // Button pressed
                 {
-                    BYTE mask = 1 << (4 + button );
+                    BYTE_68K mask = 1 << (4 + button );
                     *ioe_port = (*ioe_port) | mask; 
                     log_debug("Joystick button: %i pressed", event->jbutton.button);
                 }
                 if( event->type == SDL_JOYBUTTONUP)       // Button released
                 {
-                    BYTE mask = 1 << (4 + button );
+                    BYTE_68K mask = 1 << (4 + button );
                     mask = 0xFF ^ mask;
                     *ioe_port = (*ioe_port) & mask; 
                     log_debug("Joystick button: %i released", event->jbutton.button);

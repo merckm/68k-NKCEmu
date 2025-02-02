@@ -32,19 +32,19 @@
 #define FRAME_COUNT 1024
 
 typedef struct {
-	BYTE ayAddress;
-	BYTE ayStatus;
-	WORD toneA;
-	WORD toneB;
-	WORD toneC;
-	BYTE volA;
-	BYTE volB;
-	BYTE volC;
-	WORD periodEnv;
-	WORD shapeEnv;
-	BYTE periodNoise;
-	BYTE dataPortA;
-	BYTE dataPortB;
+	BYTE_68K ayAddress;
+	BYTE_68K ayStatus;
+	WORD_68K toneA;
+	WORD_68K toneB;
+	WORD_68K toneC;
+	BYTE_68K volA;
+	BYTE_68K volB;
+	BYTE_68K volC;
+	WORD_68K periodEnv;
+	WORD_68K shapeEnv;
+	BYTE_68K periodNoise;
+	BYTE_68K dataPortA;
+	BYTE_68K dataPortB;
 	SDL_AudioDeviceID audioDev;
 	nkc_array* devices;
 	struct ayumi ay;
@@ -56,13 +56,13 @@ extern "C"
 {
 #endif
 
-	typedef unsigned short WORD; /* 16 bit unsigned */
-	typedef unsigned char BYTE;	 /* 8 bit unsigned */
+	typedef unsigned short WORD_68K; /* 16 bit unsigned */
+	typedef unsigned char BYTE_68K;	 /* 8 bit unsigned */
 
-	BYTE sound_p40_in();
-	void sound_p40_out(BYTE data);
-	BYTE sound_p41_in();
-	void sound_p41_out(BYTE data);
+	BYTE_68K sound_p40_in();
+	void sound_p40_out(BYTE_68K data);
+	BYTE_68K sound_p41_in();
+	void sound_p41_out(BYTE_68K data);
 	void sound_reset(const char * soundDriver);
 
 #ifdef __cplusplus

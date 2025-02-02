@@ -60,24 +60,25 @@
 #include "ioe.h"
 #include "cas.h"
 #include "centronics.h"
+#include "ser.h"
 #include "promer.h"
 #include "sound.h"
 #include "uhr.h"
 
 /* Read/write macros */
-#define READ_BYTE(BASE, ADDR) (BASE)[ADDR]
-#define READ_WORD(BASE, ADDR) (((BASE)[ADDR] << 8) | \
+#define READ_BYTE_68K(BASE, ADDR) (BASE)[ADDR]
+#define READ_WORD_68K(BASE, ADDR) (((BASE)[ADDR] << 8) | \
                                (BASE)[(ADDR) + 1])
-#define READ_LONG(BASE, ADDR) (((BASE)[ADDR] << 24) |       \
+#define READ_LONG_68K(BASE, ADDR) (((BASE)[ADDR] << 24) |       \
                                ((BASE)[(ADDR) + 1] << 16) | \
                                ((BASE)[(ADDR) + 2] << 8) |  \
                                (BASE)[(ADDR) + 3])
 
-#define WRITE_BYTE(BASE, ADDR, VAL) (BASE)[ADDR] = (VAL) & 0xff
-#define WRITE_WORD(BASE, ADDR, VAL)     \
+#define WRITE_BYTE_68K(BASE, ADDR, VAL) (BASE)[ADDR] = (VAL) & 0xff
+#define WRITE_WORD_68K(BASE, ADDR, VAL)     \
     (BASE)[ADDR] = ((VAL) >> 8) & 0xff; \
     (BASE)[(ADDR) + 1] = (VAL) & 0xff
-#define WRITE_LONG(BASE, ADDR, VAL)            \
+#define WRITE_LONG_68K(BASE, ADDR, VAL)            \
     (BASE)[ADDR] = ((VAL) >> 24) & 0xff;       \
     (BASE)[(ADDR) + 1] = ((VAL) >> 16) & 0xff; \
     (BASE)[(ADDR) + 2] = ((VAL) >> 8) & 0xff;  \
@@ -90,6 +91,7 @@ extern cas g_cas;
 extern col256 g_col;
 extern gdp64 g_gdp;
 extern cent g_cent;
+extern ser g_ser;
 extern promer g_promer;
 
 int g_start_gp_ram = 0x0E0000;
@@ -453,6 +455,14 @@ unsigned int cpu_read_byte(unsigned int address)
         case COL_PAGE:
         case COL_JADOS_PAGE:
             return col_pCE_in();
+        case SER_DATA:
+            return ser_pF0_in();
+        case SER_STATUS:
+            return ser_pF1_in();
+        case SER_CMD:
+            return ser_pF2_in();
+        case SER_CNTL:
+            return ser_pF3_in();
         case UHR_DATA:
             return uhr_pFE_in();
         case UNKNOWN:
@@ -464,11 +474,11 @@ unsigned int cpu_read_byte(unsigned int address)
     }
 
     if (g_bb.bb_enabled && address <= 0x2000)
-        return READ_BYTE(g_rom, address);
+        return READ_BYTE_68K(g_rom, address);
     else
     {
         if (address <= MAX_RAM)     // HINT: g_ram contains RAM and standard ROMs, g_rom only Bankboot rom
-            return READ_BYTE(g_ram, address);
+            return READ_BYTE_68K(g_ram, address);
         else
             return 0xFF;
 
@@ -481,7 +491,7 @@ unsigned int cpu_read_word(unsigned int address)
         g_extraSlice += (4 + (2 * g_config.numWaitStates));
 
     if (g_bb.bb_enabled && address <= 0x2000)
-        return READ_WORD(g_rom, address);
+        return READ_WORD_68K(g_rom, address);
 
     if (address > 0xffff00)
     {
@@ -502,7 +512,7 @@ unsigned int cpu_read_word(unsigned int address)
         return col_getWord(address);
 
     if(address <= MAX_RAM)
-        return READ_WORD(g_ram, address);
+        return READ_WORD_68K(g_ram, address);
     else
         return 0xFFFF;
 }
@@ -513,7 +523,7 @@ unsigned int cpu_read_long(unsigned int address)
         g_extraSlice += (8 + (4 * g_config.numWaitStates));
 
     if (g_bb.bb_enabled && address <= 0x2000)
-        return READ_LONG(g_rom, address);
+        return READ_LONG_68K(g_rom, address);
 
     if (address > 0xffff00)
     {
@@ -530,11 +540,11 @@ unsigned int cpu_read_long(unsigned int address)
         return col_getLong(address);
 
     // if(address >= 0x000064 && address <= 0x00007C) {
-    //     log_debug("Reading 68000 interrupt vector %08X,  %08X", address, READ_LONG(g_ram, address));
+    //     log_debug("Reading 68000 interrupt vector %08X,  %08X", address, READ_LONG_68K(g_ram, address));
     // }
 
     if(address <= MAX_RAM)
-        return READ_LONG(g_ram, address);
+        return READ_LONG_68K(g_ram, address);
     else
         return 0xFFFFFFFF;
 }
@@ -696,6 +706,18 @@ void cpu_write_byte(unsigned int address, unsigned int value)
         case COL_JADOS_PAGE:
             col_pCE_out(value & 0xff);
             return;
+        case SER_DATA:
+            ser_pF0_out(value & 0xff);
+            return;
+        case SER_STATUS:
+            ser_pF1_out(value & 0xff);
+            return; 
+        case SER_CMD:
+            ser_pF2_out(value & 0xff);
+            return;
+        case SER_CNTL:  
+            ser_pF3_out(value & 0xff);
+            return;
         case UHR_DATA:
             uhr_pFE_out(value & 0xff);
             return;
@@ -709,7 +731,7 @@ void cpu_write_byte(unsigned int address, unsigned int value)
 
     if (isRam(address))
     {
-        WRITE_BYTE(g_ram, address, value);
+        WRITE_BYTE_68K(g_ram, address, value);
     }
 }
 
@@ -744,7 +766,7 @@ void cpu_write_word(unsigned int address, unsigned int value)
         if ((address >= g_config.col256RAMAddr) && (address <= g_config.col256RAMAddr + 0x3FFF) && g_col.col_active)
             col_setWord(address, value);
 
-        WRITE_WORD(g_ram, address, value);
+        WRITE_WORD_68K(g_ram, address, value);
     }
 }
 
@@ -769,7 +791,7 @@ void cpu_write_long(unsigned int address, unsigned int value)
         if ((address >= g_config.col256RAMAddr) && (address <= g_config.col256RAMAddr + 0x3FFF) && g_col.col_active)
             col_setLong(address, value);
         else
-            WRITE_LONG(g_ram, address, value);
+            WRITE_LONG_68K(g_ram, address, value);
     }
     else
         return;
@@ -788,6 +810,7 @@ void cpu_pulse_reset(void)
     cas_reset();
     ioe_reset(g_config.joystickA, g_config.joystickB);
     cent_reset();
+    ser_reset();
     promer_reset();
     uhr_reset();
     sound_reset(g_config.soundDriver);

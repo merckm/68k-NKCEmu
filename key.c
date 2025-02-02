@@ -55,7 +55,7 @@ void clipboard_reset()
 
 }
 
-void set_key(BYTE key)
+void set_key(BYTE_68K key)
 {
 	g_key.keyReg68 = key;
 }
@@ -63,7 +63,7 @@ void set_key(BYTE key)
 /*
  * KEY functions
  */
-BYTE key_p68_in()
+BYTE_68K key_p68_in()
 {
     // free clipoard text if all has benn pasted
     if ( (g_key.clipboardText != NULL)
@@ -76,7 +76,7 @@ BYTE key_p68_in()
     /* check if clipboard text can still be pasted */
     if (g_key.clipboardOffset < g_key.clipboardLength)
     {
-        BYTE ret = g_key.clipboardText[g_key.clipboardOffset];
+        BYTE_68K ret = g_key.clipboardText[g_key.clipboardOffset];
         // We will increase the offset when we receive a strobe reset
         if (ret == 0x0A)     // Ignore LF as it is Ctrl-J
         {
@@ -90,13 +90,13 @@ BYTE key_p68_in()
 	return g_key.keyReg68;
 }
 
-void key_p68_out(BYTE b)
+void key_p68_out(BYTE_68K b)
 {
     log_warn("Key output not supported");
 	return; /* no output on key ports */
 }
 
-BYTE key_p69_in()
+BYTE_68K key_p69_in()
 {
     /* Increment clipboard offset on strob bit reset */
     if (g_key.clipboardOffset < g_key.clipboardLength)
@@ -108,7 +108,7 @@ BYTE key_p69_in()
 	return g_key.keyReg69; /* return DIP switch settings */
 }
 
-void key_p69_out(BYTE b)
+void key_p69_out(BYTE_68K b)
 {
 	return; /* no output on key DIP ports */
 }
@@ -117,7 +117,7 @@ void key_event(SDL_Event* event)
 {
     if (event->type == SDL_KEYUP)
     {
-        BYTE released = nkc_get_ascii(event->key);
+        BYTE_68K released = nkc_get_ascii(event->key);
 		if( released == g_key.keyReg68 )
 			g_key.keyReg68 = 0x80; /* reset status to no key pressed */
 	}

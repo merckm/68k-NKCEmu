@@ -54,7 +54,7 @@ extern void resetVsyncTimer();
 gdp64 g_gdp;
 gdp64_gui_cursor g_gui_cursor;
 
-WORD lineStyle[4] = {0xFFFF,  /* Line styles of EF9366 in hexadecimal representation, first a continous line */
+WORD_68K lineStyle[4] = {0xFFFF,  /* Line styles of EF9366 in hexadecimal representation, first a continous line */
                      0xCCCC,  /* Dotted (2 dots on, 2 dots off) */
                      0xF0F0,  /* Dashed (4 dots on, 4 dots off) */
                      0xFFCC}; /* Dotted-dashed (10 dots on, 2 dots off, 2 dots on, 2 dots off) */
@@ -345,7 +345,7 @@ void DrawBlock()
 void DrawHLine(int x1, int y, int x2)
 {
     /* which line style do we use? */
-    WORD style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
+    WORD_68K style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
     g_gdp.regs.penX = x2; /* adjust X coordinate even if pen is up */
     /* should wie exchange x values? */
     if (x2 < x1)
@@ -354,7 +354,7 @@ void DrawHLine(int x1, int y, int x2)
         x1 = x2;
         x2 = h; /* triangular exchange */
     }
-    WORD bit = 0x8000;   /* bit mask for line style */
+    WORD_68K bit = 0x8000;   /* bit mask for line style */
     if (g_gdp.regs.ctrl1 & 1) /* is pen up? */
     {
         if (SDL_MUSTLOCK(g_gdp.pages[g_gdp.actualWritePage]))
@@ -400,7 +400,7 @@ void DrawHLine(int x1, int y, int x2)
 void DrawVLine(int x, int y1, int y2)
 {
     /* which line style do we use? */
-    WORD style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
+    WORD_68K style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
     g_gdp.regs.penY = 255 - y2; /* adjust Y coordinate even if pen is up */
     /* should wie exchange x values? */
     if (y2 < y1)
@@ -409,7 +409,7 @@ void DrawVLine(int x, int y1, int y2)
         y1 = y2;
         y2 = h; /* triangular exchange */
     }
-    WORD bit = 0x8000;   /* bit mask for line style */
+    WORD_68K bit = 0x8000;   /* bit mask for line style */
     if (g_gdp.regs.ctrl1 & 1) /* is pen up? */
     {
         if (SDL_MUSTLOCK(g_gdp.pages[g_gdp.actualWritePage]))
@@ -456,7 +456,7 @@ void DrawVLine(int x, int y1, int y2)
 void DrawLine(int x1, int y1, int x2, int y2)
 {
     /* which line style do we use? */
-    WORD style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
+    WORD_68K style = lineStyle[(g_gdp.regs.ctrl2 & 3)];
     /* adjust coordinates, even if pen is up */
     // g_gdp.regs.penY=255-y2;
     // g_gdp.regs.penX=x2;
@@ -471,7 +471,7 @@ void DrawLine(int x1, int y1, int x2, int y2)
         x1 = x2;
         x2 = h;
     }
-    WORD bit = 0x8000;   /* bit mask for line style */
+    WORD_68K bit = 0x8000;   /* bit mask for line style */
     if (g_gdp.regs.ctrl1 & 1) /* is pen up? */
     {
         if (SDL_MUSTLOCK(g_gdp.pages[g_gdp.actualWritePage]))
@@ -600,12 +600,12 @@ void fillScreen()
  Begin of I/O functions for port 0x60 and 0x70-0x7F
 */
 
-BYTE gdp64_p60_in()
+BYTE_68K gdp64_p60_in()
 {
     return g_gdp.regs.seite;
 }
 
-void gdp64_p60_out(BYTE b)
+void gdp64_p60_out(BYTE_68K b)
 {
 //    if(g_gdp.isGuiScreen)
 //        return;
@@ -619,12 +619,12 @@ void gdp64_p60_out(BYTE b)
     g_gdp.regs.seite = b;
 }
 
-BYTE gdp64_p61_in()
+BYTE_68K gdp64_p61_in()
 {
     return 0;   // Should be DMA Register
 }
 
-void gdp64_p61_out(BYTE b)
+void gdp64_p61_out(BYTE_68K b)
 {
 //    if(g_gdp.isGuiScreen)
 //        return;
@@ -636,7 +636,7 @@ void gdp64_p61_out(BYTE b)
     g_gdp.regs.scroll = b;
 }
 
-BYTE gdp64_p70_in()
+BYTE_68K gdp64_p70_in()
 {
     /* read status register of EF9366
      * meanings of the bits:
@@ -664,7 +664,7 @@ BYTE gdp64_p70_in()
     return g_gdp.regs.status;
 }
 
-void gdp64_p70_out(BYTE b)
+void gdp64_p70_out(BYTE_68K b)
 {
     // if(b < 0x20 )
     //     log_info("GDP64: Write to port 0x70: %x", b);
@@ -681,9 +681,9 @@ void gdp64_p70_out(BYTE b)
     if (b >= 128)
     {
         signed char dirMul[][2] = {{1, 0}, {1, 1}, {0, 1}, {-1, 1}, {0, -1}, {1, -1}, {-1, 0}, {-1, -1}};
-        BYTE dx = (b & 0x60) >> 5;
-        BYTE dy = ((b & 0x18) >> 3);
-        BYTE dir = (b & 7);
+        BYTE_68K dx = (b & 0x60) >> 5;
+        BYTE_68K dy = ((b & 0x18) >> 3);
+        BYTE_68K dir = (b & 7);
         int i;
         if (g_gdp.regs.ctrl1 & 2)
             pen = fg32;
@@ -726,7 +726,7 @@ void gdp64_p70_out(BYTE b)
         break;
 
     case 6: /* clear screen and reset coordinates */
-        log_debug("==== START ERASE  ===== GDP64: Clear screen and reset coordinates");
+//        log_debug("==== START ERASE  ===== GDP64: Clear screen and reset coordinates");
         clearScreen();
         g_gdp.regs.penX = 0;
         g_gdp.regs.penY = 0;
@@ -761,7 +761,7 @@ void gdp64_p70_out(BYTE b)
         break;
 
     case 14: /* set Y to 0 */
-    log_info("==== START ERASE  ===== GDP64: Set Y to 0");
+        log_info("GDP64: Set Y to 0");
         g_gdp.regs.penY = 0;
         break;
 
@@ -840,7 +840,7 @@ void gdp64_p70_out(BYTE b)
     return;
 }
 
-BYTE gdp64_p71_in()
+BYTE_68K gdp64_p71_in()
 {
     /* read CTRL1 register of EF9366
      * meanings of the bits:
@@ -856,14 +856,14 @@ BYTE gdp64_p71_in()
     return g_gdp.regs.ctrl1;
 }
 
-void gdp64_p71_out(BYTE b)
+void gdp64_p71_out(BYTE_68K b)
 {
     /* accept values for CTRL1 register of the EF9366 */
     g_gdp.regs.ctrl1 = b;
     return;
 }
 
-BYTE gdp64_p72_in()
+BYTE_68K gdp64_p72_in()
 {
     /* read CTRL2 register of EF9366
      * meanings of the bits:
@@ -879,7 +879,7 @@ BYTE gdp64_p72_in()
     return g_gdp.regs.ctrl2;
 }
 
-void gdp64_p72_out(BYTE b)
+void gdp64_p72_out(BYTE_68K b)
 {
     /* accept values for CTRL2 register of the EF9366 */
     g_gdp.regs.ctrl2 = b;
@@ -890,56 +890,56 @@ void gdp64_p72_out_word( int b )
 {
     /* accept values for CTRL2 and CSIZE registers of the EF9366 */
     /* This is used mainly in a clr.w instruction in GP 6.xx     */
-    BYTE msb = (b & 0xFF00) >> 8;
+    BYTE_68K msb = (b & 0xFF00) >> 8;
     gdp64_p72_out(msb);
-    BYTE lsb = b & 0xFF;
+    BYTE_68K lsb = b & 0xFF;
     gdp64_p73_out(lsb);
     return;
 }
 
-BYTE gdp64_p73_in()
+BYTE_68K gdp64_p73_in()
 {
     /* read CSIZE register of EF9366 */
     return g_gdp.regs.csize;
 }
 
-void gdp64_p73_out(BYTE b)
+void gdp64_p73_out(BYTE_68K b)
 {
     /* set CSIZE register of EF9366 */
-    log_debug("Set CSIZE to %x", b);
+    //log_debug("Set CSIZE to %x", b);
     g_gdp.regs.csize = b;
 }
 
-BYTE gdp64_p75_in()
+BYTE_68K gdp64_p75_in()
 {
     /* read DELTAX register of EF9366 */
     return g_gdp.regs.deltax;
 }
 
-void gdp64_p75_out(BYTE b)
+void gdp64_p75_out(BYTE_68K b)
 {
     /* set DELTAX register of EF9366 */
 //    log_debug("Set DELTAX to %d\n", b);
     g_gdp.regs.deltax = b;
 }
 
-BYTE gdp64_p77_in()
+BYTE_68K gdp64_p77_in()
 {
     /* read DELTAY register of EF9366 */
     return g_gdp.regs.deltay;
 }
 
-void gdp64_p77_out(BYTE b)
+void gdp64_p77_out(BYTE_68K b)
 {
     /* set DELTAY register of EF9366 */
 //    log_debug("Set DELTAY to %d\n", b);
     g_gdp.regs.deltay = b;
 }
 
-BYTE gdp64_p78_in()
+BYTE_68K gdp64_p78_in()
 {
     /* read X MSB register of EF9366 */
-    return (BYTE)((g_gdp.regs.penX & 0xFF00) >> 8); /* most significant 8 bits */
+    return (BYTE_68K)((g_gdp.regs.penX & 0xFF00) >> 8); /* most significant 8 bits */
 }
 
 int gdp64_p78_in_word()
@@ -948,7 +948,7 @@ int gdp64_p78_in_word()
     return g_gdp.regs.penX;
 }
 
-void gdp64_p78_out(BYTE b)
+void gdp64_p78_out(BYTE_68K b)
 {
     /* set X MSB register of EF9366 */
 //    log_debug("Set X MSB to %d", b);
@@ -960,23 +960,23 @@ void gdp64_p78_out_word(int b)
     g_gdp.regs.penX = b & 0xFFFF;
 }
 
-BYTE gdp64_p79_in()
+BYTE_68K gdp64_p79_in()
 {
     /* read X LSB register of EF9366 */
-    return (BYTE)(g_gdp.regs.penX & 0xFF);
+    return (BYTE_68K)(g_gdp.regs.penX & 0xFF);
 }
 
-void gdp64_p79_out(BYTE b)
+void gdp64_p79_out(BYTE_68K b)
 {
     /* set X LSB register of EF9366 */
 //    log_debug("Set X LSB to %d", b);
     g_gdp.regs.penX = ((int)b) | (g_gdp.regs.penX & 0xFF00);
 }
 
-BYTE gdp64_p7A_in()
+BYTE_68K gdp64_p7A_in()
 {
     /* read Y MSB register of EF9366 */
-    return (BYTE)((g_gdp.regs.penY & 0xFF00) >> 8); /* most significant 8 bits */
+    return (BYTE_68K)((g_gdp.regs.penY & 0xFF00) >> 8); /* most significant 8 bits */
 }
 
 int gdp64_p7A_in_word()
@@ -985,7 +985,7 @@ int gdp64_p7A_in_word()
     return g_gdp.regs.penY;
 }
 
-void gdp64_p7A_out(BYTE b)
+void gdp64_p7A_out(BYTE_68K b)
 {
     /* set Y MSB register of EF9366 */
 //    log_debug("Set Y MSB to %d", b);
@@ -997,13 +997,13 @@ void gdp64_p7A_out_word(int b)
     g_gdp.regs.penY = b & 0xFFFF;
 }
 
-BYTE gdp64_p7B_in()
+BYTE_68K gdp64_p7B_in()
 {
     /* read Y LSB register of EF9366 */
-    return (BYTE)(g_gdp.regs.penY & 0xFF);
+    return (BYTE_68K)(g_gdp.regs.penY & 0xFF);
 }
 
-void gdp64_p7B_out(BYTE b)
+void gdp64_p7B_out(BYTE_68K b)
 {
     /* set Y LSB register of EF9366 */
 //    log_debug("Set Y LSB to %d", b);
@@ -1206,7 +1206,7 @@ void gdp64_clear_screen()
     clearScreen();
 }
 
-void gdp64_set_vsync(BYTE vs)
+void gdp64_set_vsync(BYTE_68K vs)
 {
     if (vs != 0)
     {

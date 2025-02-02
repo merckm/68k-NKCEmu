@@ -33,20 +33,20 @@ typedef struct
     bool taktHigh;
     int bitCounter;
     int mode; // -1 Unknown, 0=write, 1=read
-    BYTE addr;
-    BYTE hour;
-    BYTE minute;
-    BYTE second;
-    BYTE day;
-    BYTE month;
-    BYTE year;
-    BYTE wday;
-    BYTE receiveByte;
+    BYTE_68K addr;
+    BYTE_68K hour;
+    BYTE_68K minute;
+    BYTE_68K second;
+    BYTE_68K day;
+    BYTE_68K month;
+    BYTE_68K year;
+    BYTE_68K wday;
+    BYTE_68K receiveByte;
     struct tm setTime;
     time_t diffTime;
     time_t ndrTime;
     time_t aktTime;
-    BYTE activeByte;
+    BYTE_68K activeByte;
 } uhr;
 
 #ifdef __cplusplus
@@ -54,8 +54,8 @@ extern "C"
 {
 #endif
 
-    BYTE uhr_pFE_in();
-    void uhr_pFE_out(BYTE data);
+    BYTE_68K uhr_pFE_in();
+    void uhr_pFE_out(BYTE_68K data);
     void uhr_reset();
 
 #ifdef __cplusplus

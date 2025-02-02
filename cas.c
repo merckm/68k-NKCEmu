@@ -35,22 +35,22 @@
 
 cas g_cas;
 
-BYTE transmitter = 0x02;
-BYTE receiver = 0x01;
+BYTE_68K transmitter = 0x02;
+BYTE_68K receiver = 0x01;
 
-BYTE cas_pCA_in()
+BYTE_68K cas_pCA_in()
 {
     return transmitter | receiver; // Allways data ready and ready to transmit
 }
 
-void cas_pCA_out(BYTE data)
+void cas_pCA_out(BYTE_68K data)
 {
     // Ignoring as we currently do not support interrupts
 }
 
-BYTE cas_pCB_in()
+BYTE_68K cas_pCB_in()
 {
-    BYTE byte = 0xff;
+    BYTE_68K byte = 0xff;
     if (g_cas.cas_file != 0)
     {
         fread(&byte, 1, 1, g_cas.cas_file);
@@ -59,7 +59,7 @@ BYTE cas_pCB_in()
     return byte;
 }
 
-void cas_pCB_out(BYTE data)
+void cas_pCB_out(BYTE_68K data)
 {
     if (g_cas.cas_file != 0)
     {

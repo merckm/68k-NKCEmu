@@ -70,9 +70,13 @@
 #define COL_ADDR CPU * 0x00ffffCCL         // Col256 address register
 #define COL_DATA CPU * 0x00ffffCDL         // Col256 data register
 #define COL_PAGE CPU * 0x00ffffCEL         // Col256 memory page selection
-#define COL_JADOS_ADDR CPU * 0x00ffffACL         // Col256 address register
-#define COL_JADOS_DATA CPU * 0x00ffffADL         // Col256 data register
-#define COL_JADOS_PAGE CPU * 0x00ffffAEL         // Col256 memory page selection
+#define COL_JADOS_ADDR CPU * 0x00ffffACL   // Col256 address register
+#define COL_JADOS_DATA CPU * 0x00ffffADL   // Col256 data register
+#define COL_JADOS_PAGE CPU * 0x00ffffAEL   // Col256 memory page selection
+#define SER_DATA CPU * 0x00ffffF0L         // Ser data register
+#define SER_STATUS CPU * 0x00ffffF1L       // Ser status register
+#define SER_CMD CPU * 0x00ffffF2L          // Ser command register
+#define SER_CNTL CPU * 0x00ffffF3L         // Ser control register
 #define UHR_DATA CPU * 0x00ffffFEL         // Uhr serial port bits
 #define UNKNOWN CPU * 0x00ffffffL          // used during memory scan, will ignore
 

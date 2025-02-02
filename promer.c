@@ -35,9 +35,9 @@
 
 promer g_promer;
 
-BYTE promer_p80_in()
+BYTE_68K promer_p80_in()
 {
-  BYTE ret = 0xFF;
+  BYTE_68K ret = 0xFF;
   if(g_promer.read) {
     if (g_promer.prom_file != 0 && g_promer.adr < g_promer.size)
     {
@@ -48,14 +48,14 @@ BYTE promer_p80_in()
   return ret;
 }
 
-void promer_p80_out(BYTE data)
+void promer_p80_out(BYTE_68K data)
 {
   g_promer.daten = data;
 }
 
-BYTE promer_p81_in()
+BYTE_68K promer_p81_in()
 {
-  BYTE status = 0x00;
+  BYTE_68K status = 0x00;
   struct timeval akttime;
 
   gettimeofday(&akttime,NULL);
@@ -65,19 +65,19 @@ BYTE promer_p81_in()
   return status;
 }
 
-void promer_p81_out(BYTE data)
+void promer_p81_out(BYTE_68K data)
 {
   g_promer.adr = (g_promer.adr & 0xFF00) + data;
 }
 
-BYTE promer_p82_in()
+BYTE_68K promer_p82_in()
 {
   // Not allowed function
-  BYTE byte = 0x00;
+  BYTE_68K byte = 0x00;
   return byte;
 }
 
-void promer_p82_out(BYTE data)
+void promer_p82_out(BYTE_68K data)
 {
 
   g_promer.adr = (g_promer.adr & 0x00FF) + ((data & 0x1F) << 8);
@@ -97,8 +97,8 @@ void promer_p82_out(BYTE data)
   {
       if (fseek(g_promer.prom_file,g_promer.adr, SEEK_SET) >= 0)
       {
-        BYTE oldData = 0xFF;
-        BYTE newData = 0xFF;
+        BYTE_68K oldData = 0xFF;
+        BYTE_68K newData = 0xFF;
         fread(&oldData, 1, 1, g_promer.prom_file);
         fseek(g_promer.prom_file,g_promer.adr, SEEK_SET);
         newData = g_promer.daten & oldData;

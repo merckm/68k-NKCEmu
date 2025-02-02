@@ -35,7 +35,7 @@
 #include "config.h"
 #include "log.h"
 
-// BYTE interrupt = 0x06;
+// BYTE_68K interrupt = 0x06;
 
 flo2 g_flo2;
 extern config g_config;
@@ -43,8 +43,8 @@ extern config g_config;
 FILE* TRACK_FILE = 0;
 
 void runVerify() {
-	BYTE drive = g_flo2.drive & 0x0F;
-	BYTE driveType = g_flo2.drive & 0b00110000;
+	BYTE_68K drive = g_flo2.drive & 0x0F;
+	BYTE_68K driveType = g_flo2.drive & 0b00110000;
 	switch(drive)
 	{
 	case 1:
@@ -103,14 +103,14 @@ void readAddress()
 	g_flo2.data[2] = 0x01;
 	g_flo2.data[3] = 0x03;
 
-	WORD crc = 0;
+	WORD_68K crc = 0;
 	for( int i=0; i<4; i++) {
 	 	crc = crc_add_byte(crc, g_flo2.data[i]);		
 	}
 
 	// TODO: Check if endianness is correct
-	g_flo2.data[4] = (BYTE) ((crc & 0xFF00) >> 8);
-	g_flo2.data[5] = (BYTE) (crc & 0x00FF);
+	g_flo2.data[4] = (BYTE_68K) ((crc & 0xFF00) >> 8);
+	g_flo2.data[5] = (BYTE_68K) (crc & 0x00FF);
 	log_debug("Address field: %2X %2X %2X %2X %2X %2X", g_flo2.data[0], g_flo2.data[1], g_flo2.data[2], g_flo2.data[3], g_flo2.data[4], g_flo2.data[5]);
 
 	g_flo2.offset = 0;
@@ -239,19 +239,19 @@ void writeTrack()
 	g_flo2.head_down = true;
 }
 
-BYTE flo2_pC0_in()
+BYTE_68K flo2_pC0_in()
 {
    	log_debug("Reading FLO2 Status register %02X. Clear Interrupts.", g_flo2.status);
 	g_flo2.intrq = false;
 	return g_flo2.status;
 }
 
-void flo2_pC0_out(BYTE data)
+void flo2_pC0_out(BYTE_68K data)
 {
    	log_debug("C0 cmd %02X", data);
 
 	g_flo2.status = 0;
-	BYTE cmd = data & (BYTE) 0xF0;
+	BYTE_68K cmd = data & (BYTE_68K) 0xF0;
 	g_flo2.intrq = false;
 	switch(cmd)
     {
@@ -473,29 +473,29 @@ void flo2_pC0_out(BYTE data)
 	}
 }
 
-BYTE flo2_pC1_in()
+BYTE_68K flo2_pC1_in()
 {
 	return g_flo2.track;
 }
 
-void flo2_pC1_out(BYTE data)
+void flo2_pC1_out(BYTE_68K data)
 {
 	g_flo2.track = data;
 }
 
-BYTE flo2_pC2_in()
+BYTE_68K flo2_pC2_in()
 {
 	return g_flo2.sector;
 }
 
-void flo2_pC2_out(BYTE data)
+void flo2_pC2_out(BYTE_68K data)
 {
 	g_flo2.sector = data;
 }
 
-BYTE flo2_pC3_in()
+BYTE_68K flo2_pC3_in()
 {
-	BYTE ret = 0;
+	BYTE_68K ret = 0;
 	if( g_flo2.offset < g_flo2.data_size )
 		ret = g_flo2.data[g_flo2.offset++];
 	if( g_flo2.offset == g_flo2.data_size )
@@ -509,7 +509,7 @@ BYTE flo2_pC3_in()
 	return ret;
 }
 
-void flo2_pC3_out(BYTE data)
+void flo2_pC3_out(BYTE_68K data)
 {
 	if( !g_flo2.drq ) {
     	log_debug("Receiving other data %d", data);
@@ -547,9 +547,9 @@ void flo2_pC3_out(BYTE data)
 	}
 }
 
-BYTE flo2_pC4_in()
+BYTE_68K flo2_pC4_in()
 {
-	BYTE ret = 0;
+	BYTE_68K ret = 0;
 	if(g_flo2.head_down)
 		ret = ret | 0b00100000; 
 	if(g_flo2.intrq)
@@ -559,9 +559,9 @@ BYTE flo2_pC4_in()
 	return ret;
 }
 
-void flo2_pC4_out(BYTE data)
+void flo2_pC4_out(BYTE_68K data)
 {
-	BYTE drive = data & 0x0F;
+	BYTE_68K drive = data & 0x0F;
    	log_debug("Writing special register C4: %X", data);
 
 	switch(drive)

@@ -218,8 +218,8 @@ void gui_draw(void)
 	SDL_RenderCopy(g_gui.renderer, g_gui.nkc_texture, NULL, &dest);
  
  	SDL_Rect led_src, led_dest;
-    BYTE ioe_porta = ioe_get_p30();
-    BYTE ioe_portb = ioe_get_p31();
+    BYTE_68K ioe_porta = ioe_get_p30();
+    BYTE_68K ioe_portb = ioe_get_p31();
     for ( int i=0; i<8; i++ ) {
         int j = 1 << i;
         if( (ioe_porta & j) != 0 )

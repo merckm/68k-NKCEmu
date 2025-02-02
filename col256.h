@@ -47,16 +47,16 @@
 #define COL256_LPEN_L 17
 
 typedef struct {
-    BYTE col_register[COL256_LPEN_L + 1];
-    BYTE col_adr;
-    BYTE col_page;
-    BYTE col_mem[64 * 1024]; /* 64K Video RAM */
+    BYTE_68K col_register[COL256_LPEN_L + 1];
+    BYTE_68K col_adr;
+    BYTE_68K col_page;
+    BYTE_68K col_mem[64 * 1024]; /* 64K Video RAM */
     SDL_Window *col_win;
     SDL_Renderer *col_renderer;
     int col_xmag;              /* Magnification in X */
     int col_ymag;              /* Magnification in Y */
     bool col_active;
-    BYTE oldColor;
+    BYTE_68K oldColor;
 } col256;
 
 #ifdef __cplusplus
@@ -64,20 +64,20 @@ extern "C"
 {
 #endif
 
-    BYTE col_pCC_in();
-    void col_pCC_out(BYTE data);
-    BYTE col_pCD_in();
-    void col_pCD_out(BYTE data);
-    BYTE col_pCE_in();
-    void col_pCE_out(BYTE data);
+    BYTE_68K col_pCC_in();
+    void col_pCC_out(BYTE_68K data);
+    BYTE_68K col_pCD_in();
+    void col_pCD_out(BYTE_68K data);
+    BYTE_68K col_pCE_in();
+    void col_pCE_out(BYTE_68K data);
     void col_reset();
     int  col_init();
-    void col_setPixel(int address, BYTE data);
-    void col_setWord(int address, WORD data);
-    void col_setLong(int address, LONG data);
-    BYTE col_getPixel(int address);
-    WORD col_getWord(int address);
-    LONG col_getLong(int address);
+    void col_setPixel(int address, BYTE_68K data);
+    void col_setWord(int address, WORD_68K data);
+    void col_setLong(int address, LONG_68K data);
+    BYTE_68K col_getPixel(int address);
+    WORD_68K col_getWord(int address);
+    LONG_68K col_getLong(int address);
     void col_draw();
 
 #ifdef __cplusplus

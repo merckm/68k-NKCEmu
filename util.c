@@ -123,7 +123,7 @@ void nkc_arr_free(nkc_array* array)
     free(array);
 }
 
-BYTE nkc_get_ascii(SDL_KeyboardEvent keyEvent)
+BYTE_68K nkc_get_ascii(SDL_KeyboardEvent keyEvent)
 {
     SDL_Keycode keycode = keyEvent.keysym.sym;
     Uint16 mod = keyEvent.keysym.mod;
@@ -140,7 +140,7 @@ BYTE nkc_get_ascii(SDL_KeyboardEvent keyEvent)
     if (isAlt)
         return 0x80;
 
-    BYTE offset = 0x60;
+    BYTE_68K offset = 0x60;
     if (isUpper)
         offset = 0x40;
     if (isCtrl)

@@ -31,10 +31,10 @@
 #define JOYAXISTHRESHOLD    10000
 
 typedef struct {
-    BYTE porta_in;
-    BYTE portb_in;
-    BYTE porta_out;
-    BYTE portb_out;
+    BYTE_68K porta_in;
+    BYTE_68K portb_in;
+    BYTE_68K porta_out;
+    BYTE_68K portb_out;
 
     char* joy1name;
     char* joy2name;
@@ -52,12 +52,12 @@ extern "C"
 {
 #endif
 
-    BYTE ioe_p30_in();
-    void ioe_p30_out(BYTE data);
-    BYTE ioe_p31_in();
-    void ioe_p31_out(BYTE data);
-    BYTE ioe_get_p30();
-    BYTE ioe_get_p31();
+    BYTE_68K ioe_p30_in();
+    void ioe_p30_out(BYTE_68K data);
+    BYTE_68K ioe_p31_in();
+    void ioe_p31_out(BYTE_68K data);
+    BYTE_68K ioe_get_p30();
+    BYTE_68K ioe_get_p31();
     void ioe_reset( const char *joyA, const char *joyB );
     void ioe_event(SDL_Event* event);
 

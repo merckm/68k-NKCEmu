@@ -33,12 +33,12 @@
 
 bankboot g_bb;
 
-BYTE bank_pC8_in()
+BYTE_68K bank_pC8_in()
 {
   return 0;
 }
 
-void bank_pC8_out(BYTE data)
+void bank_pC8_out(BYTE_68K data)
 {
   log_debug("Disable Bankboot");
   g_bb.bb_enabled = FALSE;

@@ -127,14 +127,14 @@
 #define EXT_INDEX_PRE(A)                  (EXT_INDEX_PRESENT(A) && ((A)&7) < 4 && ((A)&7) != 0)
 #define EXT_INDEX_POST(A)                 (EXT_INDEX_PRESENT(A) && ((A)&7) > 4)
 #define EXT_INDEX_SCALE(A)                (((A)>>9)&3)
-#define EXT_INDEX_LONG(A)                 BIT_B(A)
+#define EXT_INDEX_LONG_68K(A)                 BIT_B(A)
 #define EXT_INDEX_AR(A)                   BIT_F(A)
 #define EXT_BASE_DISPLACEMENT_PRESENT(A)  (((A)&0x30) > 0x10)
-#define EXT_BASE_DISPLACEMENT_WORD(A)     (((A)&0x30) == 0x20)
-#define EXT_BASE_DISPLACEMENT_LONG(A)     (((A)&0x30) == 0x30)
+#define EXT_BASE_DISPLACEMENT_WORD_68K(A)     (((A)&0x30) == 0x20)
+#define EXT_BASE_DISPLACEMENT_LONG_68K(A)     (((A)&0x30) == 0x30)
 #define EXT_OUTER_DISPLACEMENT_PRESENT(A) (((A)&3) > 1 && ((A)&0x47) < 0x44)
-#define EXT_OUTER_DISPLACEMENT_WORD(A)    (((A)&3) == 2 && ((A)&0x47) < 0x44)
-#define EXT_OUTER_DISPLACEMENT_LONG(A)    (((A)&3) == 3 && ((A)&0x47) < 0x44)
+#define EXT_OUTER_DISPLACEMENT_WORD_68K(A)    (((A)&3) == 2 && ((A)&0x47) < 0x44)
+#define EXT_OUTER_DISPLACEMENT_LONG_68K(A)    (((A)&3) == 3 && ((A)&0x47) < 0x44)
 
 
 /* Opcode flags */
@@ -482,15 +482,15 @@ static char* get_ea_mode_str(uint instruction, uint size)
 					strcpy(mode, "0");
 					break;
 				}
-				base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-				outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+				base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG_68K(extension) ? read_imm_32() : read_imm_16()) : 0;
+				outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG_68K(extension) ? read_imm_32() : read_imm_16()) : 0;
 				if(EXT_BASE_REGISTER_PRESENT(extension))
 					sprintf(base_reg, "A%d", instruction&7);
 				else
 					*base_reg = 0;
 				if(EXT_INDEX_REGISTER_PRESENT(extension))
 				{
-					sprintf(index_reg, "%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+					sprintf(index_reg, "%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 					if(EXT_INDEX_SCALE(extension))
 						sprintf(index_reg+strlen(index_reg), "*%d", 1 << EXT_INDEX_SCALE(extension));
 				}
@@ -504,7 +504,7 @@ static char* get_ea_mode_str(uint instruction, uint size)
 					strcat(mode, "[");
 				if(base)
 				{
-					if (EXT_BASE_DISPLACEMENT_LONG(extension))
+					if (EXT_BASE_DISPLACEMENT_LONG_68K(extension))
 					{
 						strcat(mode, make_signed_hex_str_32(base));
 					}
@@ -549,9 +549,9 @@ static char* get_ea_mode_str(uint instruction, uint size)
 			}
 
 			if(EXT_8BIT_DISPLACEMENT(extension) == 0)
-				sprintf(mode, "(A%d,%c%d.%c", instruction&7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+				sprintf(mode, "(A%d,%c%d.%c", instruction&7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 			else
-				sprintf(mode, "(%s,A%d,%c%d.%c", make_signed_hex_str_8(extension), instruction&7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+				sprintf(mode, "(%s,A%d,%c%d.%c", make_signed_hex_str_8(extension), instruction&7, EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 			if(EXT_INDEX_SCALE(extension))
 				sprintf(mode+strlen(mode), "*%d", 1 << EXT_INDEX_SCALE(extension));
 			strcat(mode, ")");
@@ -581,15 +581,15 @@ static char* get_ea_mode_str(uint instruction, uint size)
 					strcpy(mode, "0");
 					break;
 				}
-				base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
-				outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
+				base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG_68K(extension) ? read_imm_32() : read_imm_16()) : 0;
+				outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG_68K(extension) ? read_imm_32() : read_imm_16()) : 0;
 				if(EXT_BASE_REGISTER_PRESENT(extension))
 					strcpy(base_reg, "PC");
 				else
 					*base_reg = 0;
 				if(EXT_INDEX_REGISTER_PRESENT(extension))
 				{
-					sprintf(index_reg, "%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+					sprintf(index_reg, "%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 					if(EXT_INDEX_SCALE(extension))
 						sprintf(index_reg+strlen(index_reg), "*%d", 1 << EXT_INDEX_SCALE(extension));
 				}
@@ -641,9 +641,9 @@ static char* get_ea_mode_str(uint instruction, uint size)
 			}
 
 			if(EXT_8BIT_DISPLACEMENT(extension) == 0)
-				sprintf(mode, "(PC,%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+				sprintf(mode, "(PC,%c%d.%c", EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 			else
-				sprintf(mode, "(%s,PC,%c%d.%c", make_signed_hex_str_8(extension), EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG(extension) ? 'l' : 'w');
+				sprintf(mode, "(%s,PC,%c%d.%c", make_signed_hex_str_8(extension), EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension), EXT_INDEX_LONG_68K(extension) ? 'l' : 'w');
 			if(EXT_INDEX_SCALE(extension))
 				sprintf(mode+strlen(mode), "*%d", 1 << EXT_INDEX_SCALE(extension));
 			strcat(mode, ")");

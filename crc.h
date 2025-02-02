@@ -31,7 +31,7 @@ extern "C"
 {
 #endif
 
-    WORD crc_add_byte(WORD, BYTE);
+    WORD_68K crc_add_byte(WORD_68K, BYTE_68K);
 
 #ifdef __cplusplus
 }
