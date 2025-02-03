@@ -292,7 +292,7 @@ int serial_read(char *buffer)
 BYTE_68K ser_pF0_in()
 {
     log_debug("SER: Data register read %02x", g_ser.receive_data);
-    g_ser.status &= 0xF7; // Set receive buffer empty
+    g_ser.status &= 0xF7; // Set receive buffer empty (Bit 3 is zero)
     return g_ser.receive_data;
 }
 
@@ -302,19 +302,19 @@ void ser_pF0_out(BYTE_68K b)
 {
     log_debug("SER: Data register set to %02x", b);
     g_ser.transmit_data = b;
-    g_ser.status &= 0xEF; // Set transmit buffer full
+    g_ser.status &= 0xEF; // Set transmit buffer full (Bit 4 is zero)
     if (g_ser.port != NULL)
     {
         serial_write(&g_ser.transmit_data);
     }
-    g_ser.status |= 0x10; // Set transmit buffer empty
+    g_ser.status |= 0x10; // Set transmit buffer empty (Bit 4 is one)
 }
 
 /// @brief Read the status register
 /// @return The status register
 BYTE_68K ser_pF1_in()
 {
-    //    log_debug("SER: Status register read %02x", g_ser.status);
+    // log_debug("SER: Status register read %02x", g_ser.status);
     // first check if there is data to read
     if (g_ser.port != NULL)
     {
@@ -337,7 +337,7 @@ BYTE_68K ser_pF1_in()
 void ser_pF1_out(BYTE_68K b)
 {
     log_debug("SER: Status register set to %02x", b);
-    g_ser.status = 0;
+    g_ser.status = 0x10;
     g_ser.interrupt_enable = false;
     ser_reset();
 }
@@ -471,7 +471,7 @@ void ser_reset()
 {
     g_ser.receive_data = 0;
     g_ser.transmit_data = 0;
-    g_ser.status = 0x50; // Set transmit buffer empty
+    g_ser.status = 0x10; // Set transmit buffer empty
     g_ser.command = 0;
     g_ser.control = 0;
     g_ser.brate = 0;
