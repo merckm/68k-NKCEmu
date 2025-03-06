@@ -61,6 +61,7 @@ add_executable(${PROJECT_NAME} 68k-nkcemu.c
                       ser.c
                       ram_fifo.c
                       mouse.c
+                      fpga_timer.c
                       m68kconf.h)
 
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS} ${SDL2_LIBRARIES} yaml SDL2::Image SDL2::TTF -lm Threads::Threads)

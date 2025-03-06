@@ -46,7 +46,7 @@
 
 extern config g_config;
 
-extern void resetVsyncTimer();
+//extern void resetVsyncTimer();
 
 // struct timeval g_oldtime;
 // struct timeval g_akttime;
